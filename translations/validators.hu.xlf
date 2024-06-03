@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="hu" datatype="plaintext" original="validators.en.xlf">
+    <body>
+      <trans-unit id="IkNxbBI" resname="This value is not a valid role.">
+        <source>This value is not a valid role.</source>
+        <target>Nem érvényes szerepkör.</target>
+      </trans-unit>
+      <trans-unit id="CLHaByy" resname="End date must not be earlier then start date.">
+        <source>End date must not be earlier then start date.</source>
+        <target>A befejezés dátuma nem lehet korábban mint a kezdés dátuma.</target>
+      </trans-unit>
+      <trans-unit id="ePrqiLM" resname="The begin date cannot be in the future.">
+        <source>The begin date cannot be in the future.</source>
+        <target>A kezdés dátuma nem lehet a jövőben.</target>
+      </trans-unit>
+      <trans-unit id="0o.pH3X" resname="This period is locked, please choose a later date.">
+        <source>This period is locked, please choose a later date.</source>
+        <target>Ez az időtartam zárolva van, kérem válasszon egy későbbi időpontot.</target>
+      </trans-unit>
+      <trans-unit id="yDlKSRw" resname="This invoice document cannot be used, please rename the file and upload it again.">
+        <source>This invoice document cannot be used, please rename the file and upload it again.</source>
+        <target>Ez a számla dokumentum nem használható, átnevezés után töltse fel újra.</target>
+      </trans-unit>
+      <trans-unit id="1V6BsD_" resname="You must select at least one user or team.">
+        <source>You must select at least one user or team.</source>
+        <target>Legalább egy felhasználót vagy csoportot kell kiválasztani.</target>
+      </trans-unit>
+      <trans-unit id="VJSZSD0" resname="The given value is not a valid time.">
+        <source>The given value is not a valid time.</source>
+        <target>A megadott érték érvénytelen idő.</target>
+      </trans-unit>
+      <trans-unit id="u2wjm2i" resname="You already have an entry for this time.">
+        <source>You already have an entry for this time.</source>
+        <target>Már rendelkezel bejegyzéssel erre az időre.</target>
+      </trans-unit>
+      <trans-unit id="rmH78_V" resname="At least one team leader must be assigned to the team.">
+        <source>At least one team leader must be assigned to the team.</source>
+        <target>A csapathoz legalább egy csapatvezetőt ki kell jelölni.</target>
+      </trans-unit>
+      <trans-unit id="6WAG.Xj" resname="The entered passwords don't match.">
+        <source>The entered passwords don't match.</source>
+        <target>A megadott jelszavak nem egyeznek.</target>
+      </trans-unit>
+      <trans-unit id="6u6oCwB" resname="The email is already used.">
+        <source>The email is already used.</source>
+        <target>Az e-mail már használatban van.</target>
+      </trans-unit>
+      <trans-unit id="S14XECA" resname="The username is already used.">
+        <source>The username is already used.</source>
+        <target>A felhasználónév már foglalt.</target>
+      </trans-unit>
+      <trans-unit id="INlaCgW" resname="An equal email is already used.">
+        <source>An equal email is already used.</source>
+        <target>Az azonos e-mail cím már használatban van.</target>
+      </trans-unit>
+      <trans-unit id="to1Q85W" resname="An activity needs to be selected.">
+        <source>An activity needs to be selected.</source>
+        <target>Ki kell választani egy tevékenységet.</target>
+      </trans-unit>
+      <trans-unit id="ekO5eXI" resname="An equal username is already used.">
+        <source>An equal username is already used.</source>
+        <target>Az azonos felhasználónév már használatban van.</target>
+      </trans-unit>
+      <trans-unit id="rHd9_aA" resname="A project needs to be selected.">
+        <source>A project needs to be selected.</source>
+        <target>Ki kell választani egy projektet.</target>
+      </trans-unit>
+      <trans-unit id="mjlH0la" resname="This timesheet is already exported.">
+        <source>This timesheet is already exported.</source>
+        <target>Ez a munkaidő-nyilvántartás már exportálva van.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

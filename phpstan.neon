@@ -1,0 +1,21 @@
+includes:
+    - %rootDir%/../phpstan-symfony/extension.neon
+    - %rootDir%/../phpstan-symfony/rules.neon
+    - %rootDir%/../phpstan-doctrine/extension.neon
+    - %rootDir%/../phpstan-doctrine/rules.neon
+    - %rootDir%/../phpstan/conf/bleedingEdge.neon
+
+parameters:
+    tmpDir: %rootDir%/../../../var/cache/phpstan
+    ignoreErrors:
+        - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required.#'
+        - '#Trait App\\Export\\Renderer\\RendererTrait is used zero times and is not analysed.#'
+        - '#Trait App\\Invoice\\Renderer\\RendererTrait is used zero times and is not analysed.#'
+    excludePaths:
+        - %rootDir%/../../../src/Ldap/LdapDriver.php
+    treatPhpDocTypesAsCertain: false
+    inferPrivatePropertyTypeFromConstructor: true
+    doctrine:
+        objectManagerLoader: %rootDir%/../../../tests/phpstan-doctrine.php
+    symfony:
+        containerXmlPath: %rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml

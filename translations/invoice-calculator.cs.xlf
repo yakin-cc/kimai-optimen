@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="cs" datatype="plaintext" original="invoice-calculator.en.xlf">
+    <body>
+      <trans-unit id="1inO2IF" resname="label.invoice_calculator">
+        <source>label.invoice_calculator</source>
+        <target>Výpočet hodnoty</target>
+      </trans-unit>
+      <trans-unit id="N6juwc4" resname="default">
+        <source>default</source>
+        <target>Výchozí: jeden záznam na časový záznam</target>
+      </trans-unit>
+      <trans-unit id="_bAHi13" resname="short">
+        <source>short</source>
+        <target>Hodiny: součty záznamů, celkem jedna položka</target>
+      </trans-unit>
+      <trans-unit id="BPiZbad" resname="user">
+        <source>user</source>
+        <target>Uživatel: jeden záznam na uživatele</target>
+      </trans-unit>
+      <trans-unit id="BlGGO.X" resname="activity">
+        <source>activity</source>
+        <target>Aktivity: jeden záznam na aktivitu</target>
+      </trans-unit>
+      <trans-unit id="JEIQ5IQ" resname="project">
+        <source>project</source>
+        <target>Projekty: jeden záznam na projekt</target>
+      </trans-unit>
+      <trans-unit id="DodjLNR" resname="date">
+        <source>date</source>
+        <target>Datum: jeden záznam na den (používá počáteční datum)</target>
+      </trans-unit>
+      <trans-unit id="aDtTH0H" resname="price">
+        <source>price</source>
+        <target state="translated">Cena: jeden záznam za cenu</target>
+      </trans-unit>
+      <trans-unit id="iFDs7Zh" resname="weekly">
+        <source>weekly</source>
+        <target state="translated">Týdenní: jeden záznam týdně (používá počáteční datum)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

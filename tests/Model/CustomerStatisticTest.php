@@ -1,0 +1,49 @@
+<?php
+
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace App\Tests\Model;
+
+use App\Model\CustomerStatistic;
+
+/**
+ * @covers \App\Model\CustomerStatistic
+ */
+class CustomerStatisticTest extends AbstractTimesheetCountedStatisticTest
+{
+    public function testDefaultValues()
+    {
+        $this->assertDefaultValues(new CustomerStatistic());
+    }
+
+    public function testSetter()
+    {
+        $this->assertSetter(new CustomerStatistic());
+    }
+
+    public function testJsonSerialize()
+    {
+        $this->assertJsonSerialize(new CustomerStatistic());
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testAdditionalSetter()
+    {
+        $sut = new CustomerStatistic();
+
+        self::assertEquals(0, $sut->getActivityAmount());
+        $sut->setActivityAmount(13);
+        self::assertEquals(13, $sut->getActivityAmount());
+
+        self::assertEquals(0, $sut->getProjectAmount());
+        $sut->setProjectAmount(2);
+        self::assertEquals(2, $sut->getProjectAmount());
+    }
+}

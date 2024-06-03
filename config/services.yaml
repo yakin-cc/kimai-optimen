@@ -1,0 +1,236 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+    app_locales: ar|cs|da|de|de_AT|de_CH|el|en|en_GB|eo|es|eu|fa|fi|fo|fr|he|hr|hu|it|ja|ko|nb_NO|nl|pl|pt|pt_BR|ro|ru|sk|sv|tr|vi|zh_CN
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+        bind:
+            $projectDirectory: '%kernel.project_dir%'
+            $kernelEnvironment: '%kernel.environment%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Event,Migrations,Model,Tests,Kernel.php,Constants.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # ================================================================================
+    # APPLICATION CORE
+    # ================================================================================
+
+    security.user.provider.chain:
+        class: App\Security\KimaiUserProvider
+
+    App\Utils\LanguageService:
+        arguments: ['%app_locales%']
+
+    App\Repository\WidgetRepository:
+        arguments:
+            $widgets: '%kimai.widgets%'
+
+    App\Controller\DashboardController:
+        arguments:
+            $dashboard: '%kimai.dashboard%'
+
+    App\Configuration\MailConfiguration:
+        arguments: ['%env(MAILER_FROM)%']
+
+    App\Configuration\LanguageFormattings:
+        arguments: ['%kimai.languages%']
+
+    App\Configuration\SystemConfiguration:
+        arguments:
+            $settings: '%kimai.config%'
+
+    App\Utils\MPdfConverter:
+        arguments:
+            $cacheDirectory: '%kernel.cache_dir%'
+
+    App\Plugin\PluginManager:
+        arguments: [!tagged kimai.plugin]
+
+    App\Validator\Constraints\TimesheetValidator:
+        arguments: [!tagged timesheet.validator]
+
+    App\Validator\Constraints\ProjectValidator:
+        arguments: [!tagged project.validator]
+        
+    App\Validator\Constraints\QuickEntryTimesheetValidator:
+        arguments: [!tagged timesheet.validator]
+
+    App\Widget\WidgetService:
+        arguments:
+            $renderer: !tagged widget.renderer
+
+    App\Utils\Translator:
+        decorates: translator
+        arguments:
+            $localDomains: '%kimai.i18n_domains%'
+
+    App\Utils\FileHelper:
+        arguments:
+            $dataDir: '%kimai.data_dir%'
+
+    App\API\Serializer\ValidationFailedExceptionErrorHandler:
+        arguments: ['@translator.default', '@fos_rest.serializer.flatten_exception_handler']
+
+    # ================================================================================
+    # DATABASE
+    # ================================================================================
+
+    # updates timesheet records and apply configured rate & rounding rules
+    App\Doctrine\TimesheetSubscriber:
+        class: App\Doctrine\TimesheetSubscriber
+        arguments: [!tagged timesheet.calculator]
+        tags:
+            - { name: doctrine.event_subscriber, priority: 50 }
+
+    # updates timestampable columns (higher priority, so the TimesheetSubscriber will be executed later)
+    Gedmo\Timestampable\TimestampableListener:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, priority: 60 }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    # store and retrieve sessions in and from database
+    App\Security\SessionHandler:
+        arguments:
+            - !service { class: PDO, factory: ['@database_connection', 'getWrappedConnection'] }
+
+    # ================================================================================
+    # TIMESHEET RECORD CALCULATOR
+    # ================================================================================
+
+    App\Timesheet\RoundingService:
+        arguments:
+            $roundingModes: !tagged timesheet.rounding_mode
+            $rules: '%kimai.timesheet.rounding%'
+
+    App\Timesheet\RateService:
+        arguments: ['%kimai.timesheet.rates%']
+
+    App\Timesheet\TrackingModeService:
+        arguments: 
+            $modes: !tagged timesheet.tracking_mode
+
+    # ================================================================================
+    # SECURITY & VOTER
+    # ================================================================================
+
+    App\Security\RoleService:
+        arguments:
+            $roles: '%security.role_hierarchy.roles%'
+
+    App\Security\RolePermissionManager:
+        arguments:
+            $permissions: '%kimai.permissions%'
+
+    # ================================================================================
+    # LDAP
+    # ================================================================================
+
+    App\Ldap\LdapAuthenticationProvider:
+        arguments: ['@App\Security\UserChecker', '', '', '', '@App\Configuration\LdapConfiguration']
+
+    # ================================================================================
+    # REPOSITORIES
+    # ================================================================================
+
+    App\Repository\TimesheetRepository:
+        class:     App\Repository\TimesheetRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Timesheet']
+
+    App\Repository\UserRepository:
+        class:     App\Repository\UserRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\User']
+
+    App\Repository\TeamRepository:
+        class:     App\Repository\TeamRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Team']
+
+    App\Repository\ActivityRepository:
+        class:     App\Repository\ActivityRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Activity']
+
+    App\Repository\ProjectRepository:
+        class:     App\Repository\ProjectRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Project']
+
+    App\Repository\TagRepository:
+        class:     App\Repository\TagRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Tag']
+
+    App\Repository\CustomerRepository:
+        class:     App\Repository\CustomerRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Customer']
+
+    App\Repository\InvoiceTemplateRepository:
+        class:     App\Repository\InvoiceTemplateRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\InvoiceTemplate']
+
+    App\Repository\ConfigurationRepository:
+        class:     App\Repository\ConfigurationRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Configuration']
+
+    App\Repository\RoleRepository:
+        class:     App\Repository\RoleRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Role']
+
+    App\Repository\RolePermissionRepository:
+        class:     App\Repository\RolePermissionRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\RolePermission']
+    
+    App\Repository\InvoiceDocumentRepository:
+        class: App\Repository\InvoiceDocumentRepository
+        arguments: ['%kimai.invoice.documents%']
+
+    App\Repository\CustomerRateRepository:
+        class:     App\Repository\CustomerRateRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\CustomerRate']
+
+    App\Repository\ActivityRateRepository:
+        class:     App\Repository\ActivityRateRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\ActivityRate']
+
+    App\Repository\ProjectRateRepository:
+        class:     App\Repository\ProjectRateRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\ProjectRate']
+
+    App\Repository\InvoiceRepository:
+        class:     App\Repository\InvoiceRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Invoice']
+
+    App\Repository\BookmarkRepository:
+        class:     App\Repository\BookmarkRepository
+        factory:   ['@doctrine.orm.entity_manager', getRepository]
+        arguments: ['App\Entity\Bookmark']

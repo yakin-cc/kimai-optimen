@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fa" datatype="plaintext" original="messages.en.xlf">
+    <body>
+      <!--
+              Global template keys
+            -->
+      <trans-unit id="N7mikjJ" resname="time_tracking">
+        <source>time_tracking</source>
+        <target>رهگیری زمان</target>
+      </trans-unit>
+      <trans-unit id="inmIkP6" resname="yes">
+        <source>yes</source>
+        <target>بله</target>
+      </trans-unit>
+      <trans-unit id="k5Apjz_" resname="no">
+        <source>no</source>
+        <target>خیر</target>
+      </trans-unit>
+      <trans-unit id=".3dyBTq" resname="both">
+        <source>both</source>
+        <target>هر دو</target>
+      </trans-unit>
+      <trans-unit id="KLIuHvt" resname="This is a mandatory field">
+        <source>This is a mandatory field</source>
+        <target>اجباری</target>
+      </trans-unit>
+      <trans-unit id="_ohHsMM" resname="create">
+        <source>create</source>
+        <target>ساختن</target>
+      </trans-unit>
+      <trans-unit id="DYHuW58" resname="confirm.delete">
+        <source>confirm.delete</source>
+        <target>شما قطعا قصد دارید این را حذف کنید؟</target>
+      </trans-unit>
+      <trans-unit id="vDd3alC" resname="admin_entity.delete_confirm">
+        <source>admin_entity.delete_confirm</source>
+        <target>این داده به خوبی پاک خواهد شد! متناوبا، از سوی دیگر شما میتوانید یک ورودی را انتخاب نمایید که تمام داده ها به آن ترجمه شوند:</target>
+      </trans-unit>
+      <trans-unit id="COyxNde" resname="delete.not_in_use">
+        <source>delete.not_in_use</source>
+        <target>این آیتم به صورت امن می تواند حذف شود.</target>
+      </trans-unit>
+      <trans-unit id="I3TZF5S" resname="cancel">
+        <source>cancel</source>
+        <target>لغو</target>
+      </trans-unit>
+      <trans-unit id="PyZ8KrQ" resname="confirm">
+        <source>confirm</source>
+        <target>تایید</target>
+      </trans-unit>
+      <trans-unit id=".0CFrRV" resname="upload">
+        <source>upload</source>
+        <target>بارگزاری</target>
+      </trans-unit>
+      <trans-unit id="JBkykGe" resname="search">
+        <source>search</source>
+        <target>جستجو</target>
+      </trans-unit>
+      <trans-unit id="hBNESu6" resname="my.profile">
+        <source>my.profile</source>
+        <target>پروفایل من</target>
+      </trans-unit>
+      <trans-unit id="J258iS6" resname="update_multiple">
+        <source>update_multiple</source>
+        <target state="translated">%action% %count% ورودی ها؟</target>
+      </trans-unit>
+      <trans-unit id="OTDmccn" resname="attachments">
+        <source>attachments</source>
+        <target>فایل ها</target>
+      </trans-unit>
+      <trans-unit id="O5w1jzb" resname="file">
+        <source>file</source>
+        <target>فایل</target>
+      </trans-unit>
+      <trans-unit id="0M_Gylq" resname="rates.empty">
+        <source>rates.empty</source>
+        <target>فایلی هنوز تنظیم نشده است.</target>
+      </trans-unit>
+      <trans-unit id="mflwMcX" resname="rates.title">
+        <source>rates.title</source>
+        <target>هزینه ها</target>
+      </trans-unit>
+      <trans-unit id="zFfl7jw" resname="sum.total">
+        <source>sum.total</source>
+        <target>جمع</target>
+      </trans-unit>
+      <!--
+              Login / Security
+            -->
+      <trans-unit id="9pvowqn" resname="label.password">
+        <source>label.password</source>
+        <target>رمز عبور</target>
+      </trans-unit>
+      <trans-unit id="WxAnbP0" resname="label.password_repeat">
+        <source>label.password_repeat</source>
+        <target>تکرار رمز عبور</target>
+      </trans-unit>
+      <trans-unit id="II4DGnv" resname="label.logout">
+        <source>label.logout</source>
+        <target>خروج</target>
+      </trans-unit>
+      <trans-unit id="hFFZGp_" resname="label.user_profile">
+        <source>label.user_profile</source>
+        <target>پروفایل من</target>
+      </trans-unit>
+      <trans-unit id="gXZR.hV" resname="label.api_token">
+        <source>label.api_token</source>
+        <target>پسورد API</target>
+      </trans-unit>
+      <trans-unit id="s_X2xpI" resname="label.api_token_repeat">
+        <source>label.api_token_repeat</source>
+        <target>ریست پسورد API</target>
+      </trans-unit>
+      <trans-unit id=".372.o7" resname="login_required">
+        <source>login_required</source>
+        <target>مجوز را گم کرده. به صفحه ورود انتقال دهد؟</target>
+      </trans-unit>
+      <!--
+              Menu / Navbar items
+            -->
+      <trans-unit id="UoOv6mx" resname="menu.homepage">
+        <source>menu.homepage</source>
+        <target>داشبرد</target>
+      </trans-unit>
+      <trans-unit id="wvvYSw_" resname="menu.admin">
+        <source>menu.admin</source>
+        <target>مدیریت</target>
+      </trans-unit>
+      <trans-unit id="6OKwCUB" resname="menu.system">
+        <source>menu.system</source>
+        <target>سیستم</target>
+      </trans-unit>
+      <trans-unit id="wBTFKFR" resname="menu.logout">
+        <source>menu.logout</source>
+        <target>خروج</target>
+      </trans-unit>
+      <trans-unit id="VXj0Y3h" resname="timesheet.title">
+        <source>timesheet.title</source>
+        <target>زمان های من</target>
+      </trans-unit>
+      <trans-unit id="vTY9SUk" resname="label.plus_more">
+        <source>label.plus_more</source>
+        <target>+%count% بیشتر</target>
+      </trans-unit>
+      <trans-unit id="1PQHtXu" resname="label.progress">
+        <source>label.progress</source>
+        <target>پیشرفت</target>
+      </trans-unit>
+      <trans-unit id="jTiYRIu" resname="label.my_team_projects">
+        <source>label.my_team_projects</source>
+        <target>پروژه های تیمی &amp; بودجه</target>
+      </trans-unit>
+      <trans-unit id="f3KMQJh" resname="label.my_teams">
+        <source>label.my_teams</source>
+        <target>تیم های من</target>
+      </trans-unit>
+      <trans-unit id="4iliLZT" resname="label.toggle_dropdown">
+        <source>label.toggle_dropdown</source>
+        <target>نمایش منو</target>
+      </trans-unit>
+      <trans-unit id="giznf_R" resname="more.info.link">
+        <source>more.info.link</source>
+        <target>اطلاعات بیشتر</target>
+      </trans-unit>
+      <trans-unit id="yEa1Yz3" resname="dashboard.all">
+        <source>dashboard.all</source>
+        <target>تمام کاربران</target>
+      </trans-unit>
+      <trans-unit id="3PYadzb" resname="dashboard.subtitle">
+        <source>dashboard.subtitle</source>
+        <target>خوش آمدی!</target>
+      </trans-unit>
+      <trans-unit id="3bqLM8Q" resname="dashboard.title">
+        <source>dashboard.title</source>
+        <target>داشبورد</target>
+      </trans-unit>
+      <trans-unit id="wCazS.X" resname="action.close">
+        <source>action.close</source>
+        <target>بستن</target>
+      </trans-unit>
+      <trans-unit id="Eb7Ygpo" resname="action.back">
+        <source>action.back</source>
+        <target>بازگشت</target>
+      </trans-unit>
+      <trans-unit id="tKZKI2Z" resname="action.reset">
+        <source>action.reset</source>
+        <target>تنظیم مجدد</target>
+      </trans-unit>
+      <trans-unit id="9hpJPiG" resname="action.save_all">
+        <source>action.save_all</source>
+        <target>ذخیره همه</target>
+      </trans-unit>
+      <trans-unit id="HLtdhYw" resname="action.save">
+        <source>action.save</source>
+        <target>ذخیره</target>
+      </trans-unit>
+      <trans-unit id="hTKWQ6g" resname="action.delete">
+        <source>action.delete</source>
+        <target>حذف</target>
+      </trans-unit>
+      <trans-unit id="ovKkXwU" resname="action.edit">
+        <source>action.edit</source>
+        <target>ویرایش</target>
+      </trans-unit>
+      <trans-unit id="zldXQq6" resname="label.actions">
+        <source>label.actions</source>
+        <target>فعالیت</target>
+      </trans-unit>
+      <trans-unit id="vkHr9AP" resname="label.billable">
+        <source>label.billable</source>
+        <target>قابل پرداخت</target>
+      </trans-unit>
+      <trans-unit id="LIOnolg" resname="placeholder.type_message">
+        <source>placeholder.type_message</source>
+        <target>پیام خود را تایپ کنید …</target>
+      </trans-unit>
+      <trans-unit id="hX.EQKy" resname="label.create_more">
+        <source>label.create_more</source>
+        <target>ورودی های بیشتری ایجاد کنید</target>
+      </trans-unit>
+      <trans-unit id="Ss2xe99" resname="label.team">
+        <source>label.team</source>
+        <target>تیم</target>
+      </trans-unit>
+      <trans-unit id="D2N6_cP" resname="label.email">
+        <source>label.email</source>
+        <target>ایمیل</target>
+      </trans-unit>
+      <trans-unit id="Z8a2kUf" resname="label.customer">
+        <source>label.customer</source>
+        <target>مشتری</target>
+      </trans-unit>
+      <trans-unit id="foM2o5T" resname="label.language">
+        <source>label.language</source>
+        <target>زبان</target>
+      </trans-unit>
+      <trans-unit id="v72sA1c" resname="label.recalculate_rates">
+        <source>label.recalculate_rates</source>
+        <target>محاسبه مجدد نرخ ها</target>
+      </trans-unit>
+      <trans-unit id="uz4SmfP" resname="help.rate_internal">
+        <source>help.rate_internal</source>
+        <target>هزینه های داخلی (اگر این مشخص نشده باشد ، از نرخ طبیعی استفاده می شود)</target>
+      </trans-unit>
+      <trans-unit id="QzvjNwg" resname="label.rate_internal">
+        <source>label.rate_internal</source>
+        <target>نرخ داخلی</target>
+      </trans-unit>
+      <trans-unit id="djL6LMC" resname="help.rate">
+        <source>help.rate</source>
+        <target>نرخ ساعتی شارژ می شود</target>
+      </trans-unit>
+      <trans-unit id="Ih3IFXj" resname="label.rate">
+        <source>label.rate</source>
+        <target>نرخ</target>
+      </trans-unit>
+      <trans-unit id="w8T34A6" resname="label.hours">
+        <source>label.hours</source>
+        <target>ساعت ها</target>
+      </trans-unit>
+      <trans-unit id="42BRM3Q" resname="label.theme.layout">
+        <source>label.theme.layout</source>
+        <target>نمایش: طرح بندی</target>
+      </trans-unit>
+      <trans-unit id="dezCZWf" resname="label.skin">
+        <source>label.skin</source>
+        <target>نمایش: رنگها</target>
+      </trans-unit>
+      <trans-unit id="IQ.tlua" resname="label.hourly_rate">
+        <source>label.hourly_rate</source>
+        <target>نرخ ساعتی</target>
+      </trans-unit>
+      <trans-unit id="VAbtieW" resname="label.hourlyRate">
+        <source>label.hourlyRate</source>
+        <target>نرخ ساعتی</target>
+      </trans-unit>
+      <trans-unit id="ijQyGRo" resname="label.tags">
+        <source>label.tags</source>
+        <target>برچسب ها</target>
+      </trans-unit>
+      <trans-unit id="VNCQ7YU" resname="label.tag">
+        <source>label.tag</source>
+        <target>برچسب ها</target>
+      </trans-unit>
+      <trans-unit id="KtnqJcg" resname="label.project">
+        <source>label.project</source>
+        <target>پروژه</target>
+      </trans-unit>
+      <trans-unit id="l1wiL0h" resname="label.activity">
+        <source>label.activity</source>
+        <target>فعالیت</target>
+      </trans-unit>
+      <trans-unit id="x8TrOec" resname="label.timeBudget">
+        <source>label.timeBudget</source>
+        <target>بودجه زمان</target>
+      </trans-unit>
+      <trans-unit id="2ktNwkr" resname="label.budget">
+        <source>label.budget</source>
+        <target>بودجه</target>
+      </trans-unit>
+      <trans-unit id="CYpZwBz" resname="label.visible">
+        <source>label.visible</source>
+        <target>قابل مشاهده</target>
+      </trans-unit>
+      <trans-unit id="txRonia" resname="label.id">
+        <source>label.id</source>
+        <target>شناسه</target>
+      </trans-unit>
+      <trans-unit id="WqTho4C" resname="label.comment">
+        <source>label.comment</source>
+        <target>دیدگاه</target>
+      </trans-unit>
+      <trans-unit id="ysOvPSq" resname="label.name">
+        <source>label.name</source>
+        <target>نام</target>
+      </trans-unit>
+      <trans-unit id="4cEApe1" resname="label.description">
+        <source>label.description</source>
+        <target>توضیحات</target>
+      </trans-unit>
+      <trans-unit id="LDhDPrF" resname="label.username">
+        <source>label.username</source>
+        <target>کاربر</target>
+      </trans-unit>
+      <trans-unit id="O2X4xZH" resname="label.user">
+        <source>label.user</source>
+        <target>کاربر</target>
+      </trans-unit>
+      <trans-unit id="cgpmY0I" resname="label.duration">
+        <source>label.duration</source>
+        <target>مدت زمان</target>
+      </trans-unit>
+      <trans-unit id="uZlpDFh" resname="label.endtime">
+        <source>label.endtime</source>
+        <target>پایان</target>
+      </trans-unit>
+      <trans-unit id="eJPDE76" resname="label.starttime">
+        <source>label.starttime</source>
+        <target>شروع</target>
+      </trans-unit>
+      <trans-unit id="H1qEi4d" resname="label.date">
+        <source>label.date</source>
+        <target>روز</target>
+      </trans-unit>
+      <trans-unit id="hlu4iX5" resname="error.no_comments_found">
+        <source>error.no_comments_found</source>
+        <target>هنوز نظری ارسال نشده است.</target>
+      </trans-unit>
+      <trans-unit id="Vz3Igj3" resname="error.no_entries_found">
+        <source>error.no_entries_found</source>
+        <target>هیچ ورودی بر اساس فیلترهای انتخابی شما پیدا نشد.</target>
+      </trans-unit>
+      <trans-unit id="1kHI0gb" resname="menu.doctor">
+        <source>menu.doctor</source>
+        <target>دکتر</target>
+      </trans-unit>
+      <trans-unit id="l4wviUE" resname="tags">
+        <source>tags</source>
+        <target>برچسب ها</target>
+      </trans-unit>
+      <trans-unit id="IXtkHRw" resname="menu.system_configuration">
+        <source>menu.system_configuration</source>
+        <target>تنظیمات</target>
+      </trans-unit>
+      <trans-unit id="hOZxcaK" resname="menu.plugin">
+        <source>menu.plugin</source>
+        <target>پلاگین ها</target>
+      </trans-unit>
+      <trans-unit id="pA.bYIk" resname="menu.admin_team">
+        <source>menu.admin_team</source>
+        <target>تیم ها</target>
+      </trans-unit>
+      <trans-unit id="fftM9nd" resname="users">
+        <source>users</source>
+        <target>کاربران</target>
+      </trans-unit>
+      <trans-unit id="YkyVVAY" resname="activities">
+        <source>activities</source>
+        <target>فعالیت ها</target>
+      </trans-unit>
+      <trans-unit id="JXfA9Ve" resname="projects">
+        <source>projects</source>
+        <target>پروژه ها</target>
+      </trans-unit>
+      <trans-unit id="IeshU90" resname="customers">
+        <source>customers</source>
+        <target>مشتریان</target>
+      </trans-unit>
+      <trans-unit id="WGIhZv1" resname="menu.admin_timesheet">
+        <source>menu.admin_timesheet</source>
+        <target>برنامه های زمانی</target>
+      </trans-unit>
+      <trans-unit id="ypVQO7o" resname="menu.reporting">
+        <source>menu.reporting</source>
+        <target>گزارش نویسی</target>
+      </trans-unit>
+      <trans-unit id="I.eil4u" resname="menu.export">
+        <source>menu.export</source>
+        <target>خروجی گرفتن</target>
+      </trans-unit>
+      <trans-unit id="C0W7_BT" resname="menu.timesheet">
+        <source>menu.timesheet</source>
+        <target>زمان من</target>
+      </trans-unit>
+      <trans-unit id="XP5zkiN" resname="modal.dirty">
+        <source>modal.dirty</source>
+        <target>فرم تغییر کرده است. برای ذخیره تغییرات ، لطفاً روی "ذخیره" یا برای لغو روی "بستن" کلیک کنید.</target>
+      </trans-unit>
+      <trans-unit id="Z8Fxbvf" resname="label.orderBy">
+        <source>label.orderBy</source>
+        <target>سفارش توسط</target>
+      </trans-unit>
+      <trans-unit id="0D_zaYd" resname="label.desc">
+        <source>label.desc</source>
+        <target>نزولی</target>
+      </trans-unit>
+      <trans-unit id="31x84Dt" resname="label.asc">
+        <source>label.asc</source>
+        <target>صعودی</target>
+      </trans-unit>
+      <trans-unit id="BytPihM" resname="label.set_as_default">
+        <source>label.set_as_default</source>
+        <target>ذخیره به عنوان تنظیمات پیش فرض</target>
+      </trans-unit>
+      <trans-unit id="IolBPQD" resname="label.searchTerm">
+        <source>label.searchTerm</source>
+        <target>عبارت جستجو</target>
+      </trans-unit>
+      <trans-unit id="Zpj9UB4" resname="label.teamlead">
+        <source>label.teamlead</source>
+        <target>رهبری تیم</target>
+      </trans-unit>
+      <trans-unit id="trDJK9W" resname="label.begin">
+        <source>label.begin</source>
+        <target>از</target>
+      </trans-unit>
+      <trans-unit id="R9typUt" resname="label.end">
+        <source>label.end</source>
+        <target>به</target>
+      </trans-unit>
+      <trans-unit id="egaNXjp" resname="label.daterange">
+        <source>label.daterange</source>
+        <target>محدوده زمانی</target>
+      </trans-unit>
+      <trans-unit id="YTSS_Q1" resname="label.color">
+        <source>label.color</source>
+        <target>رنگ</target>
+      </trans-unit>
+      <trans-unit id="GzWKgBk" resname="error.directory_missing">
+        <source>error.directory_missing</source>
+        <target>موقعیت "%dir%" وجود ندارد و قابل ساختن نیست.</target>
+      </trans-unit>
+      <trans-unit id="C2TGff0" resname="error.directory_protected">
+        <source>error.directory_protected</source>
+        <target>موقعیت "%dir%" در برابر write حفاظت شده است.</target>
+      </trans-unit>
+      <trans-unit id="jdbtx6z" resname="action.add">
+        <source>action.add</source>
+        <target>افزودن</target>
+      </trans-unit>
+      <trans-unit id="b43sCwO" resname="help.fixedRate">
+        <source>help.fixedRate</source>
+        <target>هربار سابقه مقدار معینی میگیرد، صرف نظر از مدت آن</target>
+      </trans-unit>
+      <trans-unit id="EoouxGX" resname="label.replaceTags">
+        <source>label.replaceTags</source>
+        <target>جایگزینی برچسب ها</target>
+      </trans-unit>
+      <trans-unit id="BxkmaKz" resname="label.appendTags">
+        <source>label.appendTags</source>
+        <target>پیوست تگ ها</target>
+      </trans-unit>
+      <trans-unit id="1_wnK76" resname="profile.title">
+        <source>profile.title</source>
+        <target>نمایه کاربر</target>
+      </trans-unit>
+      <trans-unit id="HWKJZ0T" resname="profile.about_me">
+        <source>profile.about_me</source>
+        <target>درباره من</target>
+      </trans-unit>
+      <trans-unit id="1c0EQaz" resname="profile.registration_date">
+        <source>profile.registration_date</source>
+        <target>ثبت شده در</target>
+      </trans-unit>
+      <trans-unit id="A6TLLQa" resname="profile.password">
+        <source>profile.password</source>
+        <target>رمز</target>
+      </trans-unit>
+      <trans-unit id="Z34ZpjK" resname="profile.api-token">
+        <source>profile.api-token</source>
+        <target>رابط برنامه نویسی اپلیکیشن</target>
+      </trans-unit>
+      <trans-unit id="ygtTz8." resname="profile.roles">
+        <source>profile.roles</source>
+        <target>نقش ها</target>
+      </trans-unit>
+      <trans-unit id="DZ7XGML" resname="profile.teams">
+        <source>profile.teams</source>
+        <target>تیم ها</target>
+      </trans-unit>
+      <trans-unit id="MQKiG33" resname="profile.preferences">
+        <source>profile.preferences</source>
+        <target>الویت ها</target>
+      </trans-unit>
+      <trans-unit id="iqQsgIW" resname="label.login.initial_view">
+        <source>label.login.initial_view</source>
+        <target>نمایه ابتدایی بعد از ورود</target>
+      </trans-unit>
+      <trans-unit id="hO7mkmf" resname="label.lastLogin">
+        <source>label.lastLogin</source>
+        <target>آخرین ورود</target>
+      </trans-unit>
+      <trans-unit id="Eq78QrH" resname="label.theme.collapsed_sidebar">
+        <source>label.theme.collapsed_sidebar</source>
+        <target>کوچک کردن نوار کناری سمت چپ</target>
+      </trans-unit>
+      <trans-unit id="0sgroZi" resname="label.calendar.initial_view">
+        <source>label.calendar.initial_view</source>
+        <target>مشاهده ابتدایی و ساده تقویم</target>
+      </trans-unit>
+      <trans-unit id="dwEVXUR" resname="timesheet.edit">
+        <source>timesheet.edit</source>
+        <target state="translated">ویرایش رکورد</target>
+      </trans-unit>
+      <trans-unit id="UbnqJLn" resname="modal.columns.title">
+        <source>modal.columns.title</source>
+        <target>ویرایش پدیداری ستون</target>
+      </trans-unit>
+      <trans-unit id="xEYQXPy" resname="profile.settings">
+        <source>profile.settings</source>
+        <target>نمایه</target>
+      </trans-unit>
+      <trans-unit id="NNKq04n" resname="label.remove_default">
+        <source>label.remove_default</source>
+        <target>حذف جستجوی علاقه مندی</target>
+      </trans-unit>
+      <trans-unit id=".ndupSK" resname="registration.check_email">
+        <source>registration.check_email</source>
+        <target>ایمیلی برای %email% شامل لینک فعالسازی ارسال شد. جهت فعال کردن حساب کاربری خود باید بر روی آن کلیک کنید.</target>
+      </trans-unit>
+      <trans-unit id="_cY.wHP" resname="resetting.check_email">
+        <source>resetting.check_email</source>
+        <target state="translated">‌لینکی به ایمیل شما ارسال شد. جهت بازیابی رمز خود روی آن کلیک کنید. نکته: شما در طی %tokenLifetime% ساعت فقط یکبار می‌توانید رمز جدید درخواست کنید. اگر ایمیل برای شما ارسال نشد پوشه هرزنامه را بررسی کنید یا دوباره تلاش کنید.</target>
+      </trans-unit>
+      <trans-unit id="XQ2.pq2" resname="error.too_many_entries">
+        <source>error.too_many_entries</source>
+        <target>درخواست قابل انجام نیست. نتایج زیادی پیدا شدند.</target>
+      </trans-unit>
+      <trans-unit id="5gjqxgK" resname="label.fixedRate">
+        <source>label.fixedRate</source>
+        <target>نرخ ثابت</target>
+      </trans-unit>
+      <trans-unit id="EbfIoLp" resname="modal.columns.description">
+        <source>modal.columns.description</source>
+        <target>ذخیره ستون های علامت گذاری نشده مخفی خواهد بود و این تنظیمات در کوکی مرورگر ذخیره می‌شود. اگر کوکی ها را پاک کنید تنظیمات به حالت اولیه بازمیگردند.</target>
+      </trans-unit>
+      <trans-unit id="Fm.kwVn" resname="profile.first_entry">
+        <source>profile.first_entry</source>
+        <target>کار میکند از تاریخ</target>
+      </trans-unit>
+      <trans-unit id="DpdNns0" resname="label.choice_pattern">
+        <source>Display of entries in selection lists</source>
+        <target state="translated">نمایش ورودی ها در لیست های انتخابی</target>
+      </trans-unit>
+      <trans-unit id="pcfRcZ4" resname="month">
+        <source>month</source>
+        <target state="translated">ماه</target>
+      </trans-unit>
+      <trans-unit id="k7MJQ82" resname="label.country">
+        <source>label.country</source>
+        <target state="translated">کشور</target>
+      </trans-unit>
+      <trans-unit id="g03c_vw" resname="label.phone">
+        <source>label.phone</source>
+        <target state="translated">تلفن</target>
+      </trans-unit>
+      <trans-unit id="otd2FZd" resname="label.currency">
+        <source>label.currency</source>
+        <target state="translated">واحد پول</target>
+      </trans-unit>
+      <trans-unit id="yttGLAB" resname="ROLE_TEAMLEAD">
+        <source>ROLE_TEAMLEAD</source>
+        <target state="translated">رهبر تیم</target>
+      </trans-unit>
+      <trans-unit id="lfSTZGe" resname="stats.workingTimeToday">
+        <source>stats.workingTimeToday</source>
+        <target state="translated">امروز %day%</target>
+      </trans-unit>
+      <trans-unit id="pX_3dNm" resname="stats.revenue">
+        <source>stats.revenue</source>
+        <target state="translated">درآمد</target>
+      </trans-unit>
+      <trans-unit id="wuUWovn" resname="stats.amountFinancialYear">
+        <source>stats.amountFinancialYear</source>
+        <target state="translated">درآمد این سال مالی</target>
+      </trans-unit>
+      <trans-unit id="ov4OQOh" resname="invoice.filter">
+        <source>invoice.filter</source>
+        <target state="translated">داده های فاکتور را فیلتر کنید</target>
+      </trans-unit>
+      <trans-unit id="7H7P1mE" resname="button.preview">
+        <source>button.preview</source>
+        <target state="translated">پیش نمایش</target>
+      </trans-unit>
+      <trans-unit id="Q9ykNhO" resname="invoice.signature_customer">
+        <source>invoice.signature_customer</source>
+        <target state="translated">تایید: تاریخ / نام مشتری / امضا</target>
+      </trans-unit>
+      <trans-unit id="Uvo1CbP" resname="status.pending">
+        <source>status.pending</source>
+        <target state="translated">در انتظار</target>
+      </trans-unit>
+      <trans-unit id="ElDyzrx" resname="export.page_of">
+        <source>export.page_of</source>
+        <target state="translated">صفحه %page% از %pages%</target>
+      </trans-unit>
+      <trans-unit id="_DDecAV" resname="entryState.exported">
+        <source>entryState.exported</source>
+        <target state="translated">پاک شد</target>
+      </trans-unit>
+      <trans-unit id="ccCiXyR" resname="entryState.not_exported">
+        <source>entryState.not_exported</source>
+        <target state="translated">باز</target>
+      </trans-unit>
+      <trans-unit id="9Rhadz6" resname="label.budgetType_full">
+        <source>label.budgetType_full</source>
+        <target state="translated">چرخه زندگی</target>
+      </trans-unit>
+      <trans-unit id="Irm6dfx" resname="agendaWeek">
+        <source>agendaWeek</source>
+        <target state="translated">هفته</target>
+      </trans-unit>
+      <trans-unit id="rYzHCFd" resname="label.timesheet.daily_stats">
+        <source>label.timesheet.daily_stats</source>
+        <target state="translated">نشان دادن در جدول زمانی</target>
+      </trans-unit>
+      <trans-unit id="tSlqVK2" resname="label.timesheet.export_decimal">
+        <source>label.timesheet.export_decimal</source>
+        <target state="translated">استفاده از زمان اعشاری در خروجی</target>
+      </trans-unit>
+      <trans-unit id="UVJ5Die" resname="calendar">
+        <source>calendar</source>
+        <target state="translated">تقویم</target>
+      </trans-unit>
+      <trans-unit id="4kQGReV" resname="label.project_end">
+        <source>label.project_end</source>
+        <target state="translated">پایان پروژه</target>
+      </trans-unit>
+      <trans-unit id="Dgmh_mv" resname="label.vat_id">
+        <source>label.vat_id</source>
+        <target state="translated">VAT-ID</target>
+      </trans-unit>
+      <trans-unit id="YNGNfGn" resname="label.tax_rate">
+        <source>label.tax_rate</source>
+        <target state="translated">نرخ مالیات</target>
+      </trans-unit>
+      <trans-unit id="0tkOMo1" resname="label.contact">
+        <source>label.contact</source>
+        <target state="translated">مخاطب</target>
+      </trans-unit>
+      <trans-unit id="eRyhERS" resname="label.fax">
+        <source>label.fax</source>
+        <target state="translated">فکس</target>
+      </trans-unit>
+      <trans-unit id="AawT9pW" resname="label.mobile">
+        <source>label.mobile</source>
+        <target state="translated">تلفن همراه</target>
+      </trans-unit>
+      <trans-unit id="PS9IH_t" resname="label.homepage">
+        <source>label.homepage</source>
+        <target state="translated">صفحه اصلی</target>
+      </trans-unit>
+      <trans-unit id="ZlZ20pG" resname="user_permissions.title">
+        <source>user_permissions.title</source>
+        <target state="translated">مجوزهای کاربر</target>
+      </trans-unit>
+      <trans-unit id="E7G60OF" resname="Allowed character: A-Z and _">
+        <source>Allowed character: A-Z and _</source>
+        <target state="translated">کاراکتر های مجاز: A-Z و _</target>
+      </trans-unit>
+      <trans-unit id="8Rfa01v" resname="label.required_version">
+        <source>label.required_version</source>
+        <target state="translated">سازگار با</target>
+      </trans-unit>
+      <trans-unit id="WRuKTcz" resname="ROLE_SUPER_ADMIN">
+        <source>ROLE_SUPER_ADMIN</source>
+        <target state="translated">مدیر سیستم</target>
+      </trans-unit>
+      <trans-unit id="XdYs3I8" resname="stats.workingTimeWeek">
+        <source>stats.workingTimeWeek</source>
+        <target state="translated">تقویم هفته %week%</target>
+      </trans-unit>
+      <trans-unit id="HPhRbtc" resname="stats.workingTimeWeekShort">
+        <source>stats.workingTimeWeekShort</source>
+        <target state="translated">هفته %week%</target>
+      </trans-unit>
+      <trans-unit id="HWB4OGJ" resname="stats.workingTimeFinancialYear">
+        <source>stats.workingTimeFinancialYear</source>
+        <target state="translated">سال مالی</target>
+      </trans-unit>
+      <trans-unit id="BXBFJP8" resname="stats.workingTime">
+        <source>stats.workingTime</source>
+        <target state="translated">زمان کار</target>
+      </trans-unit>
+      <trans-unit id="TdBJBAl" resname="stats.durationToday">
+        <source>stats.durationToday</source>
+        <target state="translated">ساعت کاری امروز</target>
+      </trans-unit>
+      <trans-unit id="XhKalZH" resname="stats.durationWeek">
+        <source>stats.durationWeek</source>
+        <target state="translated">ساعت کاری این هفته</target>
+      </trans-unit>
+      <trans-unit id="uaOwf_P" resname="stats.durationMonth">
+        <source>stats.durationMonth</source>
+        <target state="translated">ساعت کاری این ماه</target>
+      </trans-unit>
+      <trans-unit id="WqF84KR" resname="stats.durationYear">
+        <source>stats.durationYear</source>
+        <target state="translated">ساعت کاری امسال</target>
+      </trans-unit>
+      <trans-unit id="xkugSAA" resname="stats.durationFinancialYear">
+        <source>stats.durationFinancialYear</source>
+        <target state="translated">ساعات کار در این سال مالی</target>
+      </trans-unit>
+      <trans-unit id="YtvPnl1" resname="stats.durationTotal">
+        <source>stats.durationTotal</source>
+        <target state="translated">کل ساعت کاری</target>
+      </trans-unit>
+      <trans-unit id="IFOLMgp" resname="stats.yourWorkingHours">
+        <source>stats.yourWorkingHours</source>
+        <target state="translated">ساعت کاری من</target>
+      </trans-unit>
+      <trans-unit id="xnJvYAE" resname="stats.amountWeek">
+        <source>stats.amountWeek</source>
+        <target state="translated">درآمد این هفته</target>
+      </trans-unit>
+      <trans-unit id="ulr3reE" resname="stats.amountMonth">
+        <source>stats.amountMonth</source>
+        <target state="translated">درآمد این ماه</target>
+      </trans-unit>
+      <trans-unit id="bQZyZaO" resname="stats.amountYear">
+        <source>stats.amountYear</source>
+        <target state="translated">درآمد امسال</target>
+      </trans-unit>
+      <trans-unit id="zMY6gkY" resname="stats.userActiveFinancialYear">
+        <source>stats.userActiveFinancialYear</source>
+        <target state="translated">کاربران فعال در این سال مالی</target>
+      </trans-unit>
+      <trans-unit id="Bor.76M" resname="stats.activityTotal">
+        <source>stats.activityTotal</source>
+        <target state="translated">فعالیت ها</target>
+      </trans-unit>
+      <trans-unit id="67uSaR3" resname="stats.projectTotal">
+        <source>stats.projectTotal</source>
+        <target state="translated">پروژه ها</target>
+      </trans-unit>
+      <trans-unit id="tnD6aPj" resname="stats.customerTotal">
+        <source>stats.customerTotal</source>
+        <target state="translated">مشتریان</target>
+      </trans-unit>
+      <trans-unit id="unC5MXv" resname="stats.percentUsed">
+        <source>stats.percentUsed</source>
+        <target state="translated">%percent%% استفاده شده</target>
+      </trans-unit>
+      <trans-unit id="HkjvwLc" resname="stats.percentUsedLeft">
+        <source>stats.percentUsedLeft</source>
+        <target state="translated">%percent%% استفاده شده (%left% هنوز در دسترس است)</target>
+      </trans-unit>
+      <trans-unit id="xN7MfSA" resname="stats.percentUsed_month">
+        <source>stats.percentUsed_month</source>
+        <target state="translated">%percent%% این ماه استفاده شده</target>
+      </trans-unit>
+      <trans-unit id="SR2r1Cs" resname="invoices">
+        <source>invoices</source>
+        <target state="translated">فاکتورها</target>
+      </trans-unit>
+      <trans-unit id="X70dwP8" resname="button.print">
+        <source>button.print</source>
+        <target state="translated">چاپ</target>
+      </trans-unit>
+      <trans-unit id="W_TXvSi" resname="button.csv">
+        <source>button.csv</source>
+        <target state="translated">CSV</target>
+      </trans-unit>
+      <trans-unit id="vC2IsaP" resname="button.xlsx">
+        <source>button.xlsx</source>
+        <target state="translated">Excel</target>
+      </trans-unit>
+      <trans-unit id="ulYFDIo" resname="button.ods">
+        <source>button.ods</source>
+        <target state="translated">ODS</target>
+      </trans-unit>
+      <trans-unit id="EO57yXg" resname="invoice.tax">
+        <source>invoice.tax</source>
+        <target state="translated">مالیات</target>
+      </trans-unit>
+      <trans-unit id="N68vyvo" resname="invoice.total">
+        <source>invoice.total</source>
+        <target state="translated">جمع</target>
+      </trans-unit>
+      <trans-unit id="MF3MdTu" resname="label.unit_price">
+        <source>label.unit_price</source>
+        <target state="translated">قیمت واحد</target>
+      </trans-unit>
+      <trans-unit id="c3d6p33" resname="invoice.total_working_time">
+        <source>invoice.total_working_time</source>
+        <target state="translated">کل مدت زمان</target>
+      </trans-unit>
+      <trans-unit id="BS00SS7" resname="label.orderNumber">
+        <source>label.orderNumber</source>
+        <target state="translated">شماره سفارش</target>
+      </trans-unit>
+      <trans-unit id="as948k9" resname="label.orderDate">
+        <source>label.orderDate</source>
+        <target state="translated">تاریخ سفارش</target>
+      </trans-unit>
+      <trans-unit id="RRj6PYN" resname="label.invoice_tax_number">
+        <source>label.invoice_tax_number</source>
+        <target state="translated">شماره مالیات بر ارزش افزوده:</target>
+      </trans-unit>
+      <trans-unit id="uFZA7Uf" resname="label.invoice_bank_account">
+        <source>label.invoice_bank_account</source>
+        <target state="translated">حساب بانکی</target>
+      </trans-unit>
+      <trans-unit id="9VxfLLy" resname="label.decimalDuration">
+        <source>label.decimalDuration</source>
+        <target state="translated">نمایش مدت زمان به صورت عدد اعشاری</target>
+      </trans-unit>
+      <trans-unit id="hzhzbqw" resname="label.status">
+        <source>label.status</source>
+        <target state="translated">وضعیت</target>
+      </trans-unit>
+      <trans-unit id="X_NRsed" resname="status.new">
+        <source>status.new</source>
+        <target state="translated">جدید</target>
+      </trans-unit>
+      <trans-unit id="PHJwR4w" resname="status.paid">
+        <source>status.paid</source>
+        <target state="translated">پرداخت شده</target>
+      </trans-unit>
+      <trans-unit id="gT9W2pZ" resname="status.canceled">
+        <source>status.canceled</source>
+        <target state="translated">لغو شد</target>
+      </trans-unit>
+      <trans-unit id="crrlEUA" resname="preview.skipped_rows">
+        <source>Skipped preview of %rows% more rows …</source>
+        <target state="translated">پیش‌نمایش %rows% ردیف‌های بیشتر رد شد…</target>
+      </trans-unit>
+      <trans-unit id="F6Jmro7" resname="export.title">
+        <source>export.title</source>
+        <target state="translated">خروجی</target>
+      </trans-unit>
+      <trans-unit id="vjmoQGo" resname="export.period">
+        <source>export.period</source>
+        <target state="translated">دوره</target>
+      </trans-unit>
+      <trans-unit id="3CQ7A2m" resname="export.document_title">
+        <source>export.document_title</source>
+        <target state="translated">خروجی جدول زمانی</target>
+      </trans-unit>
+      <trans-unit id="d5wyWRD" resname="export.full_list">
+        <source>export.full_list</source>
+        <target state="translated">لیست کامل</target>
+      </trans-unit>
+      <trans-unit id="N778uJ6" resname="export.summary">
+        <source>export.summary</source>
+        <target state="translated">خلاصه</target>
+      </trans-unit>
+      <trans-unit id="W92QGbY" resname="export.warn_result_amount">
+        <source>export.warn_result_amount</source>
+        <target state="translated">جستجوی شما به %count% نتیجه منتهی می شود. اگر خروجی انجام نشد، باید جستجوی خود را بیشتر محدود کنید.</target>
+      </trans-unit>
+      <trans-unit id="pnGDFmf" resname="label.type">
+        <source>label.type</source>
+        <target state="translated">نوع</target>
+      </trans-unit>
+      <trans-unit id="OxdYMR3" resname="active.entries">
+        <source>active.entries</source>
+        <target state="translated">اندازه گیری زمان فعالیت شما</target>
+      </trans-unit>
+      <trans-unit id="e7XS97t" resname="timesheet.all">
+        <source>timesheet.all</source>
+        <target state="translated">نمایش تمام رکوردها</target>
+      </trans-unit>
+      <trans-unit id="dTHY7Mw" resname="timesheet.start">
+        <source>timesheet.start</source>
+        <target state="translated">رکورد زمانی ایجاد کنید</target>
+      </trans-unit>
+      <trans-unit id="MPimOps" resname="label.pageSize">
+        <source>label.pageSize</source>
+        <target state="translated">اندازه صفحه</target>
+      </trans-unit>
+      <trans-unit id="KhyA_PW" resname="label.entryState">
+        <source>label.entryState</source>
+        <target state="translated">سوابق</target>
+      </trans-unit>
+      <trans-unit id="do7fP0q" resname="entryState.all">
+        <source>entryState.all</source>
+        <target state="translated">همه</target>
+      </trans-unit>
+      <trans-unit id="spHpd_I" resname="entryState.stopped">
+        <source>entryState.stopped</source>
+        <target state="translated">متوقف شده</target>
+      </trans-unit>
+      <trans-unit id="BhsaLxX" resname="export.clear_all">
+        <source>export.clear_all</source>
+        <target state="translated">همه رکوردهای نشان داده شده به عنوان باز علامت گذاری شوند؟</target>
+      </trans-unit>
+      <trans-unit id="qtjPKUT" resname="export.mark_all">
+        <source>export.mark_all</source>
+        <target state="translated">همه رکوردهای نشان داده شده به عنوان پاک شده علامت گذاری شوند؟</target>
+      </trans-unit>
+      <trans-unit id="2Ek7sXu" resname="label.batch_meta_fields">
+        <source>label.batch_meta_fields</source>
+        <target state="translated">فیلدهای اضافی</target>
+      </trans-unit>
+      <trans-unit id="9Wt8Pp_" resname="help.batch_meta_fields">
+        <source>help.batch_meta_fields</source>
+        <target state="translated">فیلدهایی که قرار است به روز شوند باید ابتدا با کلیک بر روی کادر مربوطه فعال شوند.</target>
+      </trans-unit>
+      <trans-unit id="csF1D35" resname="label.not_invoiced">
+        <source>label.not_invoiced</source>
+        <target state="translated">صورتحساب نشده است</target>
+      </trans-unit>
+      <trans-unit id="cHfLJtL" resname="label.budgetType_month">
+        <source>label.budgetType_month</source>
+        <target state="translated">ماهانه</target>
+      </trans-unit>
+      <trans-unit id="tvV0NhL" resname="delete_warning.short_stats">
+        <source>delete_warning.short_stats</source>
+        <target state="translated">در حال حاضر %records% رکورد زمانی وجود دارد که در مجموع مدت زمان %duration% را جمع آوری می کند.</target>
+      </trans-unit>
+      <trans-unit id="tp.gIrE" resname="team.add_user.help">
+        <source>team.add_user.help</source>
+        <target state="translated">با انتخاب یک کاربر جدید از لیست، یک کاربر جدید به تیم اضافه کنید. پس از آن می‌توانید تصمیم بگیرید که آیا کاربر باید به یک رهبر تیم تبدیل شود یا خیر.</target>
+      </trans-unit>
+      <trans-unit id="yNWIi5U" resname="default_value_new">
+        <source>default_value_new</source>
+        <target state="translated">مقادیر پیش‌فرض برای ورودی‌های جدید</target>
+      </trans-unit>
+      <trans-unit id="IPHM4iP" resname="updated_at">
+        <source>Updated at</source>
+        <target state="translated">به روز شده در</target>
+      </trans-unit>
+      <trans-unit id="nlwMf5w" resname="invoice_document.max_reached">
+        <source>invoice_document.max_reached</source>
+        <target state="translated">به حداکثر مقدار %max% اسناد فاکتور رسیده است. بعد از حذف یکی دیگر می توانید اضافه کنید.</target>
+      </trans-unit>
+      <trans-unit id="Q0Zip02" resname="agendaDay">
+        <source>agendaDay</source>
+        <target state="translated">روز</target>
+      </trans-unit>
+      <trans-unit id="UrRn8xj" resname="label.title">
+        <source>label.title</source>
+        <target state="translated">عنوان</target>
+      </trans-unit>
+      <trans-unit id="KtTP.Sh" resname="label.active">
+        <source>label.active</source>
+        <target state="translated">فعال</target>
+      </trans-unit>
+      <trans-unit id="G.GEdlk" resname="user_role.title">
+        <source>user_role.title</source>
+        <target state="translated">نقش کاربر</target>
+      </trans-unit>
+      <trans-unit id="d75KAlJ" resname="label.version">
+        <source>label.version</source>
+        <target state="translated">نسخه</target>
+      </trans-unit>
+      <trans-unit id="iwWaUoa" resname="export.filter">
+        <source>export.filter</source>
+        <target state="translated">فیلتر کردن داده ها برای خروجی</target>
+      </trans-unit>
+      <trans-unit id="JIKNAYP" resname="stats.workingTimeMonth">
+        <source>stats.workingTimeMonth</source>
+        <target state="translated">%month% %year%</target>
+      </trans-unit>
+      <trans-unit id="JnUFsNi" resname="stats.workingTimeYear">
+        <source>stats.workingTimeYear</source>
+        <target state="translated">تمام سال %year%</target>
+      </trans-unit>
+      <trans-unit id="023M9Ta" resname="stats.amountToday">
+        <source>stats.amountToday</source>
+        <target state="translated">درآمد امروز</target>
+      </trans-unit>
+      <trans-unit id="Z0fz23v" resname="stats.amountTotal">
+        <source>stats.amountTotal</source>
+        <target state="translated">کل درآمد</target>
+      </trans-unit>
+      <trans-unit id="xyiadv3" resname="stats.userActiveToday">
+        <source>stats.userActiveToday</source>
+        <target state="translated">کاربران فعال امروز</target>
+      </trans-unit>
+      <trans-unit id="knMHaeO" resname="stats.userActiveWeek">
+        <source>stats.userActiveWeek</source>
+        <target state="translated">کاربران فعال این هفته</target>
+      </trans-unit>
+      <trans-unit id="adzVDgb" resname="stats.userActiveMonth">
+        <source>stats.userActiveMonth</source>
+        <target state="translated">کاربران فعال این ماه</target>
+      </trans-unit>
+      <trans-unit id="AswjFvh" resname="stats.userActiveYear">
+        <source>stats.userActiveYear</source>
+        <target state="translated">کاربران فعال امسال</target>
+      </trans-unit>
+      <trans-unit id="dLTb1Po" resname="stats.userActiveTotal">
+        <source>stats.userActiveTotal</source>
+        <target state="translated">کاربران فعال همیشه</target>
+      </trans-unit>
+      <trans-unit id="lEW82ex" resname="stats.activeRecordings">
+        <source>stats.activeRecordings</source>
+        <target state="translated">سوابق فعال</target>
+      </trans-unit>
+      <trans-unit id="t5eIWp8" resname="stats.userTotal">
+        <source>stats.userTotal</source>
+        <target state="translated">کاربران</target>
+      </trans-unit>
+      <trans-unit id="vWJPpYU" resname="stats.percentUsedLeft_month">
+        <source>stats.percentUsedLeft_month</source>
+        <target state="translated">%percent%% استفاده شده (%left% این ماه در دسترس است)</target>
+      </trans-unit>
+      <trans-unit id="Oq.KtC6" resname="admin_invoice_template.title">
+        <source>admin_invoice_template.title</source>
+        <target state="translated">الگوی فاکتور</target>
+      </trans-unit>
+      <trans-unit id="IQ9DUOW" resname="button.preview_print">
+        <source>button.preview_print</source>
+        <target state="translated">پیش نمایش چاپ</target>
+      </trans-unit>
+      <trans-unit id="7J7G3Vr" resname="label.mark_as_exported">
+        <source>label.mark_as_exported</source>
+        <target state="translated">علامت گذاری به عنوان صادر شده</target>
+      </trans-unit>
+      <trans-unit id="p0IprAw" resname="label.template">
+        <source>label.template</source>
+        <target state="translated">قالب</target>
+      </trans-unit>
+      <trans-unit id="zfIRxJh" resname="label.due_days">
+        <source>label.due_days</source>
+        <target state="translated">مدت پرداخت در روز</target>
+      </trans-unit>
+      <trans-unit id="4XKFnWh" resname="invoice.from">
+        <source>invoice.from</source>
+        <target state="translated">از جانب</target>
+      </trans-unit>
+      <trans-unit id="hx7vsMA" resname="invoice.to">
+        <source>invoice.to</source>
+        <target state="translated">به</target>
+      </trans-unit>
+      <trans-unit id="x_W5sV4" resname="invoice.number">
+        <source>invoice.number</source>
+        <target state="translated">شماره فاکتور</target>
+      </trans-unit>
+      <trans-unit id="86KyrKO" resname="invoice.subtotal">
+        <source>invoice.subtotal</source>
+        <target state="translated">جمع فرعی</target>
+      </trans-unit>
+      <trans-unit id="TPzFWUs" resname="invoice.service_date">
+        <source>invoice.service_date</source>
+        <target state="translated">تاریخ سرویس</target>
+      </trans-unit>
+      <trans-unit id="6x24VVR" resname="label.amount">
+        <source>label.amount</source>
+        <target state="translated">تعداد</target>
+      </trans-unit>
+      <trans-unit id="g7EpaPY" resname="label.total_rate">
+        <source>label.total_rate</source>
+        <target state="translated">قیمت کل</target>
+      </trans-unit>
+      <trans-unit id="vKY0tof" resname="export.date_copyright">
+        <source>export.date_copyright</source>
+        <target state="translated">%date% با %kimai% ایجاد شد</target>
+      </trans-unit>
+      <trans-unit id="X3JM9wj" resname="label.exported">
+        <source>label.exported</source>
+        <target state="translated">خروجی گرفته شده</target>
+      </trans-unit>
+      <trans-unit id="z_YHoZn" resname="label.includeNoWork">
+        <source>label.includeNoWork</source>
+        <target state="translated">نمایش مطالب بدون رزرو</target>
+      </trans-unit>
+      <trans-unit id="nVulc7." resname="label.includeBudgetType_full">
+        <source>label.includeBudgetType_full</source>
+        <target state="translated">نمایش ورودی‌ها با بودجه «چرخه عمر»</target>
+      </trans-unit>
+      <trans-unit id="Zif614Q" resname="add_user.label">
+        <source>add_user.label</source>
+        <target state="translated">افزودن کاربر</target>
+      </trans-unit>
+      <trans-unit id="f8oNzSP" resname="quick_entry.title">
+        <source>quick_entry.title</source>
+        <target state="translated">ساعات کار هفتگی</target>
+      </trans-unit>
+      <trans-unit id="5R.QsZ3" resname="theme.update_browser_title">
+        <source>theme.update_browser_title</source>
+        <target state="translated">بروزرسانی عنوان مرورگر</target>
+      </trans-unit>
+      <trans-unit id="75kjTF9" resname="calendar.drag_and_drop.delete">
+        <source>calendar.drag_and_drop.delete</source>
+        <target state="translated">اگر می خواهید یک ورودی را حذف کنید، باید آن را روی دکمه بکشید.</target>
+      </trans-unit>
+      <trans-unit id="yLOqEX_" resname="label.project_start">
+        <source>label.project_start</source>
+        <target state="translated">شروع پروژه</target>
+      </trans-unit>
+      <trans-unit id="39AtPxQ" resname="label.number">
+        <source>label.number</source>
+        <target state="translated">حساب کاربری</target>
+      </trans-unit>
+      <trans-unit id="7jfRn_1" resname="label.company">
+        <source>label.company</source>
+        <target state="translated">نام شرکت</target>
+      </trans-unit>
+      <trans-unit id="GOStgLi" resname="label.vat">
+        <source>label.vat</source>
+        <target state="translated">مالیات</target>
+      </trans-unit>
+      <trans-unit id="c9W5AO4" resname="label.address">
+        <source>label.address</source>
+        <target state="translated">آدرس</target>
+      </trans-unit>
+      <trans-unit id="dmtPdwq" resname="label.timezone">
+        <source>label.timezone</source>
+        <target state="translated">منطقه زمانی</target>
+      </trans-unit>
+      <trans-unit id="TRDzmCV" resname="label.alias">
+        <source>label.alias</source>
+        <target state="translated">نام</target>
+      </trans-unit>
+      <trans-unit id="nWMH_Nr" resname="label.avatar">
+        <source>label.avatar</source>
+        <target state="translated">تصویر پروفایل (URL)</target>
+      </trans-unit>
+      <trans-unit id="iD6CNOO" resname="label.roles">
+        <source>label.roles</source>
+        <target state="translated">نقش</target>
+      </trans-unit>
+      <trans-unit id="718iPw6" resname="ROLE_ADMIN">
+        <source>ROLE_ADMIN</source>
+        <target state="translated">مدیر</target>
+      </trans-unit>
+      <trans-unit id="aAa5uRR" resname="button.pdf">
+        <source>button.pdf</source>
+        <target state="translated">PDF</target>
+      </trans-unit>
+      <trans-unit id="zPcx3O_" resname="invoice_print">
+        <source>invoice_print</source>
+        <target state="translated">صورتحساب</target>
+      </trans-unit>
+      <trans-unit id="rAJrxSK" resname="invoice.due_days">
+        <source>invoice.due_days</source>
+        <target state="translated">هدف پرداخت</target>
+      </trans-unit>
+      <trans-unit id="Xij3oQl" resname="invoice.payment_date">
+        <source>invoice.payment_date</source>
+        <target state="translated">تاریخ پرداخت</target>
+      </trans-unit>
+      <trans-unit id="77aZC3r" resname="label.payment_terms">
+        <source>label.payment_terms</source>
+        <target state="translated">شرایط پرداخت</target>
+      </trans-unit>
+      <trans-unit id="9p2KQag" resname="invoice.signature_user">
+        <source>invoice.signature_user</source>
+        <target state="translated">تایید: تاریخ / نام مشاور / امضا</target>
+      </trans-unit>
+      <trans-unit id="WVU_S.A" resname="recent.activities">
+        <source>recent.activities</source>
+        <target state="translated">یکی از آخرین فعالیت های خود را دوباره شروع کنید</target>
+      </trans-unit>
+      <trans-unit id="SLV47Uu" resname="recent.activities.format">
+        <source>recent.activities.format</source>
+        <target state="translated">%activity% در %project% برای %customer%</target>
+      </trans-unit>
+      <trans-unit id="xm7mqoK" resname="entryState.running">
+        <source>entryState.running</source>
+        <target state="translated">فعال</target>
+      </trans-unit>
+      <trans-unit id="3zn5T5e" resname="label.not_exported">
+        <source>label.not_exported</source>
+        <target state="translated">خروجی گرفته نشده</target>
+      </trans-unit>
+      <trans-unit id="AJ6dwR." resname="label.last_record_before">
+        <source>label.last_record_before</source>
+        <target state="translated">هیچ زمانی رزرو نشده است از</target>
+      </trans-unit>
+      <trans-unit id="qDnURk7" resname="label.last_record">
+        <source>label.last_record</source>
+        <target state="translated">آخرین ورودی</target>
+      </trans-unit>
+      <trans-unit id="LXdqaTH" resname="label.account_number">
+        <source>label.account_number</source>
+        <target state="translated">شماره پرسنل</target>
+      </trans-unit>
+      <trans-unit id="PoF7hD8" resname="label.budgetType">
+        <source>label.budgetType</source>
+        <target state="translated">نوع بودجه</target>
+      </trans-unit>
+      <trans-unit id="rvO5ZXf" resname="ROLE_USER">
+        <source>ROLE_USER</source>
+        <target state="translated">کاربر</target>
+      </trans-unit>
+      <trans-unit id="61p_ckr" resname="label.hours_24">
+        <source>label.hours_24</source>
+        <target state="translated">24 ساعت</target>
+      </trans-unit>
+      <trans-unit id="B.Dbbob" resname="label.includeNoBudget">
+        <source>label.includeNoBudget</source>
+        <target state="translated">نمایش مطالب بدون بودجه</target>
+      </trans-unit>
+      <trans-unit id="Wq.h4nD" resname="label.includeBudgetType_month">
+        <source>label.includeBudgetType_month</source>
+        <target state="translated">نمایش مطالب با بودجه "ماهانه"</target>
+      </trans-unit>
+      <trans-unit id="U_D.NIy" resname="automatic">
+        <source>automatic</source>
+        <target state="translated">اتوماتیک</target>
+      </trans-unit>
+      <trans-unit id="74pEVx1" resname="label.invoiceText">
+        <source>label.invoiceText</source>
+        <target state="translated">متن فاکتور</target>
+      </trans-unit>
+      <trans-unit id="S0vT92U" resname="label.globalsOnly">
+        <source>label.globalsOnly</source>
+        <target state="translated">فقط جهانی</target>
+      </trans-unit>
+      <trans-unit id="8mTf0eZ" resname="label.budgetIndependent">
+        <source>label.budgetIndependent</source>
+        <target state="translated">نمایش بدون توجه به "نوع بودجه"</target>
+      </trans-unit>
+      <trans-unit id="G9hBaDJ" resname="label.globalActivities">
+        <source>label.globalActivities</source>
+        <target state="translated">اجازه فعالیت های سراسری</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

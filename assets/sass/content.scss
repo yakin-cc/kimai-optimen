@@ -1,0 +1,82 @@
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+.content {
+    padding: 15px 0;
+}
+
+@media (min-width: $screen-sm-min) {
+    .content {
+        padding: 15px;
+    }
+}
+
+@media (min-width: $screen-lg-min) {
+    .content {
+        padding: 20px;
+    }
+}
+
+td {
+    &.timesheet-description {
+        ul {
+            padding-left: 15px;
+        }
+        p {
+            margin: 0;
+        }
+    }
+}
+
+/* ABOUT SCREEN */
+.box-body .menu-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    margin-right: 15px;
+}
+
+.label-gray {
+    background-color: $gray-lte;
+    color: #666;
+}
+
+/* Delete link in action dropdowns */
+.dropdown-menu > li.delete > a {
+    color: #dd4b39;
+}
+
+.open-edit {
+    cursor: pointer;
+}
+
+/* allow minimized table columns, eg. customer team & visibility */
+th.w-min,
+td.w-min {
+    width: 1%;
+    white-space: nowrap;
+}
+table.dataTable thead > tr > th.hw-min {
+    width: 1%;
+    white-space: normal;
+}
+
+.badge {
+    font-weight: normal;
+    color: #000;
+    background-color: $kimai-default;
+}
+
+.label {
+    font-weight: normal;
+}
+
+a.link-black {
+    color: #000;
+}

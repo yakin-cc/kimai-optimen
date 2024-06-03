@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ko" datatype="plaintext" original="about.en.xlf">
+    <body>
+      <trans-unit id="3Clo55j" resname="about.title">
+        <source>about.title</source>
+        <target state="translated">Kimai 정보</target>
+      </trans-unit>
+      <trans-unit id="oYYDCG5" resname="support">
+        <source>support</source>
+        <target state="translated">도움 </target>
+      </trans-unit>
+      <trans-unit id="dHqPOYO" resname="website">
+        <source>website</source>
+        <target state="translated">홈페이지</target>
+      </trans-unit>
+      <trans-unit id="EGpYQvx" resname="help">
+        <source>help</source>
+        <target state="translated">도움말</target>
+      </trans-unit>
+      <trans-unit id="mz4ieCN" resname="donate">
+        <source>donate</source>
+        <target state="translated">Kimai의 미래를 위해 기부하기</target>
+      </trans-unit>
+      <trans-unit id="DwbowBh" resname="published_under">
+        <source>published_under</source>
+        <target state="translated">%kimai%는 아래에 게시됩니다</target>
+      </trans-unit>
+      <trans-unit id="A0nWoXZ" resname="special_thanks">
+        <source>special_thanks</source>
+        <target state="translated">특별하게 감사…</target>
+      </trans-unit>
+      <trans-unit id="L7cff3Q" resname="library_authors">
+        <source>library_authors</source>
+        <target state="translated">… 다음 소프트웨어 라이브러리의 작성자, Kimai는 당신이 없었다면 불가능했을 것입니다 👍</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

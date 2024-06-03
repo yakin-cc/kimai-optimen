@@ -1,0 +1,88 @@
+<?php
+
+/*
+ * This file is part of the Kimai time-tracking app.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace App\Invoice\Hydrator;
+
+use App\Entity\Project;
+use App\Invoice\InvoiceModel;
+use App\Invoice\InvoiceModelHydrator;
+use App\Project\ProjectStatisticService;
+
+class InvoiceModelProjectHydrator implements InvoiceModelHydrator
+{
+    use BudgetHydratorTrait;
+
+    private $projectStatistic;
+
+    public function __construct(ProjectStatisticService $projectStatistic)
+    {
+        $this->projectStatistic = $projectStatistic;
+    }
+
+    public function hydrate(InvoiceModel $model): array
+    {
+        if (!$model->getQuery()->hasProjects()) {
+            return [];
+        }
+
+        $values = [];
+        $i = 0;
+
+        if (\count($model->getQuery()->getProjects()) === 1) {
+            $values['project'] = $model->getQuery()->getProjects()[0]->getName();
+        }
+
+        foreach ($model->getQuery()->getProjects() as $project) {
+            $prefix = '';
+            if ($i > 0) {
+                $prefix = $i . '.';
+            }
+            $values = array_merge($values, $this->getValuesFromProject($model, $project, $prefix));
+            $i++;
+        }
+
+        return $values;
+    }
+
+    private function getValuesFromProject(InvoiceModel $model, Project $project, string $prefix): array
+    {
+        $prefix = 'project.' . $prefix;
+
+        $formatter = $model->getFormatter();
+        $currency = $model->getCurrency();
+
+        $values = [
+            $prefix . 'id' => $project->getId(),
+            $prefix . 'name' => $project->getName(),
+            $prefix . 'comment' => $project->getComment(),
+            $prefix . 'order_number' => $project->getOrderNumber(),
+            $prefix . 'start_date' => null !== $project->getStart() ? $formatter->getFormattedDateTime($project->getStart()) : '',
+            $prefix . 'end_date' => null !== $project->getEnd() ? $formatter->getFormattedDateTime($project->getEnd()) : '',
+            $prefix . 'order_date' => null !== $project->getOrderDate() ? $formatter->getFormattedDateTime($project->getOrderDate()) : '',
+            $prefix . 'budget_money' => $formatter->getFormattedMoney($project->getBudget(), $currency),
+            $prefix . 'budget_money_nc' => $formatter->getFormattedMoney($project->getBudget(), $currency, false),
+            $prefix . 'budget_money_plain' => $project->getBudget(),
+            $prefix . 'budget_time' => $project->getTimeBudget(),
+            $prefix . 'budget_time_decimal' => $formatter->getFormattedDecimalDuration($project->getTimeBudget()),
+            $prefix . 'budget_time_minutes' => (int) ($project->getTimeBudget() / 60),
+        ];
+
+        $statistic = $this->projectStatistic->getBudgetStatisticModel($project, $model->getQuery()->getEnd());
+
+        $values = array_merge($values, $this->getBudgetValues($prefix, $statistic, $model));
+
+        foreach ($project->getVisibleMetaFields() as $metaField) {
+            $values = array_merge($values, [
+                $prefix . 'meta.' . $metaField->getName() => $metaField->getValue(),
+            ]);
+        }
+
+        return $values;
+    }
+}

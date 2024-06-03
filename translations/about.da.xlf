@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="da" datatype="plaintext" original="about.en.xlf">
+    <body>
+      <trans-unit id="3Clo55j" resname="about.title">
+        <source>about.title</source>
+        <target>Om Kimai</target>
+      </trans-unit>
+      <trans-unit id="oYYDCG5" resname="support">
+        <source>support</source>
+        <target>Support</target>
+      </trans-unit>
+      <trans-unit id="dHqPOYO" resname="website">
+        <source>website</source>
+        <target>Hjemmeside</target>
+      </trans-unit>
+      <trans-unit id="EGpYQvx" resname="help">
+        <source>help</source>
+        <target>Dokumentation</target>
+      </trans-unit>
+      <trans-unit id="mz4ieCN" resname="donate">
+        <source>donate</source>
+        <target>Støt Kimai's fremtid</target>
+      </trans-unit>
+      <trans-unit id="DwbowBh" resname="published_under">
+        <source>published_under</source>
+        <target>%kimai% er udgivet under</target>
+      </trans-unit>
+      <trans-unit id="A0nWoXZ" resname="special_thanks">
+        <source>special_thanks</source>
+        <target>Tak til …</target>
+      </trans-unit>
+      <trans-unit id="L7cff3Q" resname="library_authors">
+        <source>library_authors</source>
+        <target>… udviklerne af følgende softwarebiblioteker, Kimai ville ikke være muligt uden jer 👍</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

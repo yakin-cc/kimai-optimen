@@ -1,0 +1,73 @@
+{% extends app.request.xmlHttpRequest ? 'form.html.twig' : 'base.html.twig' %}
+
+{% block page_title %}{{ 'admin_invoice_template.title'|trans }}{% endblock %}
+
+{% block main %}
+    {% set formEditTemplate = app.request.xmlHttpRequest ? 'default/_form_modal.html.twig' : 'default/_form.html.twig' %}
+    {% set formOptions = {
+        'title': template.name|default('create'|trans),
+        'form': form,
+        'back': path('admin_invoice_template')
+    } %}
+
+    {% embed formEditTemplate with formOptions %}
+        {% block form_body %}
+            {{ form_row(form.name) }}
+            {{ form_row(form.title) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.company) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.vatId) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.address) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.contact) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.paymentTerms) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.paymentDetails) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.dueDays) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.vat) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.renderer) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.language) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.calculator) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.numberGenerator) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_row(form.decimalDuration) }}
+                </div>
+            </div>
+            {{ form_widget(form) }}
+        {% endblock %}
+    {% endembed %}    
+{% endblock %}

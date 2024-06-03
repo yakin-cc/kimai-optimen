@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+use App\Kernel;
+use App\ConsoleApplication;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\Dotenv\Dotenv;
+
+set_time_limit(0);
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+// do NOT rely on calls to getenv() as it is not thread safe
+(new Dotenv(false))->loadEnv(dirname(__DIR__).'/.env');
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'prod');
+$debug = (bool) ($_SERVER['APP_DEBUG'] ?? (in_array($env, ['dev', 'test']))) && !$input->hasParameterOption(['--no-debug', '']);
+
+if ($debug) {
+    umask(0000);
+
+    Debug::enable();
+}
+
+$kernel = new Kernel($env, $debug);
+$application = new ConsoleApplication($kernel);
+$application->run($input);

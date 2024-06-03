@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% import "user/actions.html.twig" as actions %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block page_title %}{{ 'users'|trans }}{% endblock %}
+{% block page_actions %}{{ actions.user(user, tab) }}{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
+            {% block profile_intro %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ widgets.user_avatar(user, false, 'avatar-md') }}
+                        {{ user.displayName }}
+                        {% if user.title is not empty %} &ndash; {{ user.title }} {% endif %}
+                    </div>
+                </div>
+            {% endblock %}
+            {% block profile_content %}{% endblock %}
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+            <div class="hidden-xs">
+            {% set event = actions(app.user, 'user', tab, {'user': user}) %}
+            {{ widgets.list_group_actions(event.actions, app.request.requestUri) }}
+            </div>
+            {% block profile_navbar %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% import "macros/widgets.html.twig" as widgets %}
+
+{% block page_title %}{{ 'dashboard.title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'dashboard.subtitle'|trans }}{% endblock %}
+
+{% block page_content_class %}{{ parent() }} dashboard{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('chart') }}
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('chart') }}
+{% endblock %}
+
+{% block main %}
+
+    {% if widgets is empty %}
+        {{ widgets.nothing_found() }}
+    {% else %}
+        {% for row in widgets %}
+            {{ render_widget(row) }}
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="pt-BR" datatype="plaintext" original="invoice-calculator.en.xlf">
+    <body>
+      <trans-unit id="1inO2IF" resname="label.invoice_calculator">
+        <source>label.invoice_calculator</source>
+        <target>Cálculo da soma</target>
+      </trans-unit>
+      <trans-unit id="N6juwc4" resname="default">
+        <source>default</source>
+        <target>Padrão: um registro de entrada por tempo</target>
+      </trans-unit>
+      <trans-unit id="_bAHi13" resname="short">
+        <source>short</source>
+        <target>Horas adicionadas - apenas uma entrada</target>
+      </trans-unit>
+      <trans-unit id="BPiZbad" resname="user">
+        <source>user</source>
+        <target>Agrupado pelo usuário - uma entrada por usuário</target>
+      </trans-unit>
+      <trans-unit id="BlGGO.X" resname="activity">
+        <source>activity</source>
+        <target>Atividade agrupada - uma entrada por atividade</target>
+      </trans-unit>
+      <trans-unit id="JEIQ5IQ" resname="project">
+        <source>project</source>
+        <target>Projeto: uma entrada por projeto</target>
+      </trans-unit>
+      <trans-unit id="iFDs7Zh" resname="weekly">
+        <source>weekly</source>
+        <target>Semanal: uma entrada por semana (utiliza a data de início)</target>
+      </trans-unit>
+      <trans-unit id="aDtTH0H" resname="price">
+        <source>price</source>
+        <target>Preço: uma entrada por preço</target>
+      </trans-unit>
+      <trans-unit id="DodjLNR" resname="date">
+        <source>date</source>
+        <target>Data: uma entrada por dia (utiliza a data de início)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

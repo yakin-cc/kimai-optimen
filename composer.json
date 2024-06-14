@@ -69,7 +69,7 @@
         "symfony/twig-bundle": "^4.4",
         "symfony/uid": "^5.0",
         "symfony/validator": "^4.4",
-        "symfony/webpack-encore-bundle": "^1.5",
+        "symfony/webpack-encore-bundle": "^1.17",
         "symfony/yaml": "^4.4",
         "twig/cssinliner-extra": "^3.0",
         "twig/extra-bundle": "^3.0",

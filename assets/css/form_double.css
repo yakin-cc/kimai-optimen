@@ -1,8 +1,0 @@
-.form-inline-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Añade un pequeño espacio entre los formularios */
-}
-.form-inline-container .form-inline {
-    margin-bottom: 0; /* Asegúrate de que no haya margen inferior */
-}

@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15",
-    "@symfony/webpack-encore": "^1.1",
+    "@symfony/webpack-encore": "^1.8.2",
     "admin-lte": "^2.4",
     "bootstrap-sass": "^3.4",
     "chart.js": "~2.9",
@@ -41,6 +41,7 @@
     "select2": "^4.0",
     "select2-bootstrap-theme": "^0.1.0-beta.10",
     "sweetalert2": "^10.16",
+    "webpack": "^5.91.0",
     "webpack-notifier": "^1.13"
   },
   "resolutions": {
@@ -48,6 +49,5 @@
   },
   "browserslist": [
     "defaults"
-  ],
-  "dependencies": {}
+  ]
 }

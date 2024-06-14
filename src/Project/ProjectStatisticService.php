@@ -823,4 +823,60 @@ class ProjectStatisticService
 
         return array_values($projectViews);
     }
+
+    /**
+     * 
+     * @param Project
+     * @return array
+     */
+    public function findMonthsForProject(int $projectId): array
+    {
+        $qb = $this->timesheetRepository->createQueryBuilder('t');
+        $qb
+            ->select('DISTINCT t.begin')
+            ->where('t.project = :projectId')
+            ->setParameter('projectId', $projectId)
+            ->orderBy('t.begin', 'DESC');
+
+        $result = $qb->getQuery()->getResult();
+
+        $formattedResult = [];
+        foreach ($result as $row) {
+            $date = $row['begin'];
+            if ($date instanceof DateTime) {
+                $formattedResult[] = $date->format('F Y'); 
+            }
+        }
+
+        return $formattedResult;
+    }
+
+
+    public function findUsersForProject(int $projectId): array
+    {
+        $qb = $this->timesheetRepository->createQueryBuilder('t');
+        $qb
+            ->select('DISTINCT u.alias') 
+            ->join('t.user', 'u')
+            ->where('t.project = :projectId')
+            ->setParameter('projectId', $projectId)
+            ->orderBy('u.alias', 'ASC');
+
+        $result = array_column($qb->getQuery()->getResult(), 'alias');
+        return $result;
+    }
+
+    public function findActivitiesForProject(int $projectId): array
+    {
+        $qb = $this->timesheetRepository->createQueryBuilder('t');
+        $qb
+            ->select('DISTINCT a.name')
+            ->join('t.activity', 'a') 
+            ->where('t.project = :projectId')
+            ->setParameter('projectId', $projectId)
+            ->orderBy('a.name', 'ASC');
+
+        $result = array_column($qb->getQuery()->getResult(), 'name');
+        return $result;
+    }
 }

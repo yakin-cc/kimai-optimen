@@ -28,10 +28,26 @@ final class ProjectDetailsQuery
      */
     private $user;
 
+    /**
+     * @var ?string|null
+     */
+    private $month;
+
+    /**
+     * @var string|null
+     */
+    private $selectedUser;
+
+    /**
+     * @var string|null
+     */
+    private $activity;
+
     public function __construct(DateTime $today, User $user)
     {
         $this->today = $today;
         $this->user = $user;
+        $this->month = null;
     }
 
     public function getToday(): DateTime
@@ -52,5 +68,62 @@ final class ProjectDetailsQuery
     public function setProject(?Project $project): void
     {
         $this->project = $project;
+    }
+
+    public function getMonth(): ?string
+    {
+        return $this->month;
+    }
+
+    public function setMonth(?string $month): void
+    {
+        $this->month = $month;
+    }
+
+    /**
+     * Get the value of user
+     *
+     * @return string|null
+     */
+    public function getSelectedUser(): ?string
+    {
+        return $this->selectedUser;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @param string|null $selectedUser
+     *
+     * @return self
+     */
+    public function setSelectedUser(?string $selectedUser): self
+    {
+        $this->selectedUser = $selectedUser;
+
+        return $this;
+    }
+     /**
+     * Get the value of activity
+     *
+     * @return string|null
+     */
+    public function getActivity(): ?string
+    {
+        return $this->activity;
+    }
+
+    /**
+     * Set the value of activity
+     *
+     * @param string|null $activity
+     *
+     * @return self
+     */
+    public function setActivity(?string $activity): self
+    {
+        $this->activity = $activity;
+
+        return $this;
     }
 }

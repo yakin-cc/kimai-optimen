@@ -57,53 +57,110 @@
                 document.dispatchEvent(new Event('render.' + chartName))
             }
         }
+
+        const userTabLi = document.querySelector('li a[href="#user-chart"]').parentElement;
+        const activityTabLi = document.querySelector('li a[href="#activity-chart"]').parentElement;
+        const userField = document.getElementById('user-field');
+        const activityField = document.getElementById('activity-field');
+
+        function toggleUserForm(){
+            userField.style.display = 'block';
+            activityField.style.display = 'none';
+        };
+
+        function toggleActivityForm(){
+            userField.style.display = 'none';
+            activityField.style.display = 'block';
+        };
+
+        function toggleAllForms(){
+            userField.style.display = 'none';
+            activityField.style.display = 'none';
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+        // Function to save the active tab to local storage
+            function saveActiveTab(event) {
+                let activeTab = event.target.getAttribute('href');
+                console.log(activeTab);
+                localStorage.setItem('activeTab', activeTab);
+            }
+
+            // Function to delete the saved active tab from local storage
+            function deleteActiveTab() {
+                localStorage.removeItem('activeTab');
+                console.log('Selected field!');
+            }
+
+            // Attach the click event to all tab links
+            let tabLinks = document.querySelectorAll('.nav-tabs a');
+            tabLinks.forEach(function(tabLink) {
+                tabLink.addEventListener('click', saveActiveTab);
+            });
+
+            // Attach change event to project fields to delete the saved active tab
+            let projectForm = document.querySelectorAll('#form-project');
+            projectForm.forEach(function(field) {
+                field.addEventListener('click', deleteActiveTab);
+            });
+
+            function setActiveTab() {
+                let activeTab = localStorage.getItem('activeTab');
+                if (activeTab) {
+                    let tabLink = document.querySelector(`.nav-tabs a[href="${activeTab}"]`);
+                    if (tabLink) {
+                        tabLink.click();
+                    }
+                }
+            }
+
+            // Set the active tab on page load
+            setActiveTab();
+        });
+
     </script>
+
 {% endblock %}
 
 {% block report %}
+    <style>
+        .form-container {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            gap: 15px;
+        }
+    </style>
+
     {% set hasData = project is not null and project_view is not null %}
 
-    
     {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
         {% import "macros/widgets.html.twig" as widgets %}
         {% block box_before %}
-            {{ form_start(form, {'attr': {'class': 'form-inline form-reporting', 'id': tableId}}) }}
+            {{ form_start(form, {'attr': {'class': 'form-inline form-reporting', 'id': tableId, 'name': 'project_details_form'}}) }}
         {% endblock %}
         {% block box_after %}
-            {{ form_end(form) }}
         {% endblock %}
         {% block box_title %}
-            {{ form_widget(form) }}
-        {% endblock %}
-        {% block box_body %}{% endblock %}
-        {% block box_body_class %}hidden{% endblock %}
-    {% endembed %}
-
-    {#
-    {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-        {% import "macros/widgets.html.twig" as widgets %}
-        {% block box_before %}
-            <div class="form-inline-container">
-                {{ form_start(form, {'attr': {'class': 'form-inline form-reporting', 'id': tableId ~ '_form'}}) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-
-                {{ form_start(form_months, {'attr': {'class': 'form-inline form-reporting', 'id': tableId ~ '_form_months'}}) }}
-                {{ form_widget(form_months) }}
-                {{ form_end(form_months) }}
+            <div class="form-container">
+                <div id="form-project">
+                {{ form_widget(form.project) }}
+                </div>
+                <div id="form-months">
+                {{ form_widget(form.month) }}
+                </div>
             </div>
         {% endblock %}
         {% block box_body %}{% endblock %}
         {% block box_body_class %}hidden{% endblock %}
     {% endembed %}
-    #}
 
     {% if not hasData %}
         {{ widgets.nothing_found() }}
     {% endif %}
 
     {% if hasData %}
-        {{ _self.project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users) }}
+        {{ _self.project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users, form) }}
         {% set currency = project.customer.currency %}
 
         {%- for yearStat in project_details.years|reverse %}
@@ -235,6 +292,7 @@
     view_revenue     = boolean
 #}
 {% macro activity_tab(activities, totalDuration, currency, chartPrefix, view_revenue) %}
+    
     {% set dataset = [] %}
     {% set labels = [] %}
     <div class="row">
@@ -269,7 +327,7 @@
     project_view    = ProjectViewModel
     project_details = ProjectDetailsModel
 #}
-{% macro project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users) %}
+{% macro project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users, form) %}
     {% set activities = project_details.activities %}
     {% set years = project_details.years %}
     {% import "macros/progressbar.html.twig" as progress %}
@@ -288,20 +346,29 @@
     {% endfor -%}
 
     <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs pull-right">
+        <ul class="nav nav-tabs pull-right" id="nav-project-details">
             {% if see_users and project_details.userStats|length > 0 %}
-            <li><a data-chart="{{ chartPrefix }}User" href="#user-chart" data-toggle="tab">{{ 'label.user'|trans }}</a></li>
+            <li onclick="toggleActivityForm()"><a data-chart="{{ chartPrefix }}User" href="#user-chart" data-toggle="tab">{{ 'label.user'|trans }}</a></li>
             {% endif %}
             {% if activities is not empty %}
-            <li><a data-chart="{{ chartPrefix }}Activity" href="#activity-chart" data-toggle="tab">{{ 'label.activity'|trans }}</a></li>
+            <li onclick = "toggleUserForm()"><a data-chart="{{ chartPrefix }}Activity" href="#activity-chart" data-toggle="tab">{{ 'label.activity'|trans }}</a></li>
             {% endif %}
             {% if view_revenue and project_view.rateTotal > 0 %}
-            <li><a data-chart="{{ chartPrefix }}Rate" href="#revenue-chart" data-toggle="tab">{{ 'stats.revenue'|trans }}</a></li>
+            <li onclick = "toggleAllForms()"><a data-chart="{{ chartPrefix }}Rate" href="#revenue-chart" data-toggle="tab">{{ 'stats.revenue'|trans }}</a></li>
             {% endif %}
             {% if project_view.durationTotal > 0 %}
-            <li><a data-chart="{{ chartPrefix }}Duration" href="#time-chart" data-toggle="tab">{{ 'stats.workingTime'|trans }}</a></li>
+            <li onclick = "toggleAllForms()"><a data-chart="{{ chartPrefix }}Duration" href="#time-chart" data-toggle="tab">{{ 'stats.workingTime'|trans }}</a></li>
             {% endif %}
-            <li class="active"><a href="#details-chart" data-toggle="tab">{{ 'report_project_details'|trans({}, 'reporting') }}</a></li>
+            <li class="active" onclick = "toggleAllForms()"><a href="#details-chart" data-toggle="tab">{{ 'report_project_details'|trans({}, 'reporting') }}</a></li>
+            <li class="form-users">
+                <div id="user-field" style="display:none;">
+                    {{ form_widget(form.selectedUser) }}
+                </div>
+                <div id="activity-field" style="display:none;">
+                    {{ form_widget(form.activity) }}
+                </div>
+                {{ form_end(form) }}
+            </li>
             <li class="pull-left header hidden-xs">
                 {{ widgets.label_project(project, {'inherit': false}) }}
             </li>

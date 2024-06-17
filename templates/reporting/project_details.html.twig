@@ -82,14 +82,12 @@
         // Function to save the active tab to local storage
             function saveActiveTab(event) {
                 let activeTab = event.target.getAttribute('href');
-                console.log(activeTab);
-                localStorage.setItem('activeTab', activeTab);
+                sessionStorage.setItem('activeTab', activeTab);
             }
 
             // Function to delete the saved active tab from local storage
             function deleteActiveTab() {
-                localStorage.removeItem('activeTab');
-                console.log('Selected field!');
+                sessionStorage.removeItem('activeTab');
             }
 
             // Attach the click event to all tab links
@@ -105,7 +103,7 @@
             });
 
             function setActiveTab() {
-                let activeTab = localStorage.getItem('activeTab');
+                let activeTab = sessionStorage.getItem('activeTab');
                 if (activeTab) {
                     let tabLink = document.querySelector(`.nav-tabs a[href="${activeTab}"]`);
                     if (tabLink) {

@@ -11,6 +11,7 @@ namespace App\Reporting\ProjectDetails;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Entity\Activity;
 use DateTime;
 
 final class ProjectDetailsQuery
@@ -29,17 +30,17 @@ final class ProjectDetailsQuery
     private $user;
 
     /**
-     * @var ?string|null
+     * @var DateTime
      */
     private $month;
 
     /**
-     * @var string|null
+     * @var User
      */
     private $selectedUser;
 
     /**
-     * @var string|null
+     * @var Activity
      */
     private $activity;
 
@@ -48,6 +49,8 @@ final class ProjectDetailsQuery
         $this->today = $today;
         $this->user = $user;
         $this->month = null;
+        $this->selectedUser = null;
+        $this->activity = null;
     }
 
     public function getToday(): DateTime
@@ -70,12 +73,12 @@ final class ProjectDetailsQuery
         $this->project = $project;
     }
 
-    public function getMonth(): ?string
+    public function getMonth(): ?DateTime
     {
         return $this->month;
     }
 
-    public function setMonth(?string $month): void
+    public function setMonth(?DateTime $month): void
     {
         $this->month = $month;
     }
@@ -83,9 +86,9 @@ final class ProjectDetailsQuery
     /**
      * Get the value of user
      *
-     * @return string|null
+     * @return User
      */
-    public function getSelectedUser(): ?string
+    public function getSelectedUser(): ?User
     {
         return $this->selectedUser;
     }
@@ -93,11 +96,11 @@ final class ProjectDetailsQuery
     /**
      * Set the value of user
      *
-     * @param string|null $selectedUser
+     * @param User $selectedUser
      *
      * @return self
      */
-    public function setSelectedUser(?string $selectedUser): self
+    public function setSelectedUser(?User $selectedUser): self
     {
         $this->selectedUser = $selectedUser;
 
@@ -106,9 +109,9 @@ final class ProjectDetailsQuery
      /**
      * Get the value of activity
      *
-     * @return string|null
+     * @return Activity
      */
-    public function getActivity(): ?string
+    public function getActivity(): ?Activity
     {
         return $this->activity;
     }
@@ -116,11 +119,11 @@ final class ProjectDetailsQuery
     /**
      * Set the value of activity
      *
-     * @param string|null $activity
+     * @param Activity $activity
      *
      * @return self
      */
-    public function setActivity(?string $activity): self
+    public function setActivity(?Activity $activity): self
     {
         $this->activity = $activity;
 

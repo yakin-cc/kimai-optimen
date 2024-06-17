@@ -61,20 +61,20 @@ class ProjectDetailsForm extends AbstractType
 
         ->add('month', ChoiceType::class, [
             'choices' => [],
-            'placeholder' => 'Select a month',
+            'placeholder' => 'Filter by month',
             'label' => false, 
             'required' => false, 
         ])
 
         ->add('selectedUser', ChoiceType::class, [
             'choices' => [],
-            'placeholder' => 'Select a user',
+            'placeholder' => 'Filter by user',
             'label' => false, 
             'required' => false, 
         ])
         ->add('activity', ChoiceType::class, [
             'choices' => [],
-            'placeholder' => 'Select an activity',
+            'placeholder' => 'Filter ',
             'label' => false,
             'required' => false,
         ])
@@ -100,20 +100,36 @@ class ProjectDetailsForm extends AbstractType
                 $activities = $this->service->findActivitiesForProject($selectedProjectId);
 
                 $form->add('month', ChoiceType::class, [
-                    'choices' => array_combine($activeMonths, $activeMonths),
+                    'choices' => $activeMonths,
+                    'choice_label'=> function($month){
+                        return $month->format('F Y');
+                    },
                     'placeholder' => 'Filter by month',
                     'label' => false, 
                     'required' => false, 
                 ])
-    
+
+                
                 ->add('selectedUser', ChoiceType::class, [
-                    'choices' => array_combine($activeUsers, $activeUsers),
+                    'choices' => $activeUsers,
+                    'choice_label' => function($user) {
+                        return $user->getAlias(); // Method to display the user alias
+                    },
+                    'choice_value' => function($user) {
+                        return $user ? $user->getId() : ''; // Method to get the user ID
+                    },
                     'placeholder' => 'Filter by user',
                     'label' => false, 
                     'required' => false, 
                 ])
                 ->add('activity', ChoiceType::class, [
-                    'choices' => array_combine($activities, $activities),
+                    'choices' => $activities,
+                    'choice_label' => function($activity) {
+                        return $activity->getName(); // Method to display the activity name
+                    },
+                    'choice_value' => function($activity) {
+                        return $activity ? $activity->getId() : ''; // Method to get the activity ID
+                    },
                     'placeholder' => 'Filter by activity',
                     'label' => false,
                     'required' => false,

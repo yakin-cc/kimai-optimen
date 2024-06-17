@@ -38,12 +38,9 @@ final class ProjectDetailsController extends AbstractController
         $user = $this->getUser();
         $projectView = null;
         $projectDetails = null;
-        $activeMonths = [];
-        $activeUsers = [];
-        $activities = [];
 
         $query = new ProjectDetailsQuery($dateFactory->createDateTime(), $user);
-        $form = $this->createForm(ProjectDetailsForm::class, $query, ['attr' => ['name' => 'project_details_form']]);
+        $form = $this->createForm(ProjectDetailsForm::class, $query, ['attr' => ['name' => 'project_details_form'], 'user' => $user]);
         $form->submit($request->query->all(), false);
 
         if ($query->getProject() !== null && $this->isGranted('details', $query->getProject())) {
@@ -53,7 +50,17 @@ final class ProjectDetailsController extends AbstractController
         }
 
         if ($query->getMonth() !== null && $this->isGranted('details', $query->getProject())){
-           
+            $selectedMonth = $query ->getMonth();
+            $projectViews = $service->getProjectView($user, [$query->getProject()], $query->getToday(), true, $selectedMonth);
+            $projectView = $projectViews[0];
+        }
+
+        if ($query->getActivity() !== null && $this->isGranted('details', $query->getProject())){
+            $selectedActivity = $query->getActivity();
+        }
+
+        if($query->getSelectedUser() !== null && $this->isGranted('details', $query->getProject())){
+            $selectedUser = $query->getSelectedUser();
         }
 
         return $this->render('reporting/project_details.html.twig', [
@@ -63,15 +70,5 @@ final class ProjectDetailsController extends AbstractController
             'form' => $form->createView(),
             'now' => $this->getDateTimeFactory()->createDateTime(),
         ]);
-    }
-
-    /**
-     * @Route(path="/reporting/project_details/update_active_tab", name="update_active_tab", methods={"POST"})
-     */
-    public function updateActiveTab(Request $request): JsonResponse
-    {
-        $tabId = $request->request->get('tab_id');
-        $this->get('session')->set('active_tab', $tabId);
-        return new JsonResponse(['status' => 'success']);
     }
 }

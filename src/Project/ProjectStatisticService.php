@@ -31,6 +31,7 @@ use App\Reporting\ProjectView\ProjectViewQuery;
 use App\Repository\Loader\ProjectLoader;
 use App\Repository\ProjectRepository;
 use App\Repository\TimesheetRepository;
+use App\Repository\ActivityRepository;
 use App\Repository\UserRepository;
 use App\Timesheet\DateTimeFactory;
 use DateTime;
@@ -47,13 +48,15 @@ class ProjectStatisticService
     private $timesheetRepository;
     private $dispatcher;
     private $userRepository;
+    private $activityRepository;
 
-    public function __construct(ProjectRepository $projectRepository, TimesheetRepository $timesheetRepository, EventDispatcherInterface $dispatcher, UserRepository $userRepository)
+    public function __construct(ProjectRepository $projectRepository, TimesheetRepository $timesheetRepository, EventDispatcherInterface $dispatcher, UserRepository $userRepository, ActivityRepository $activityRepository)
     {
         $this->repository = $projectRepository;
         $this->timesheetRepository = $timesheetRepository;
         $this->dispatcher = $dispatcher;
         $this->userRepository = $userRepository;
+        $this->activityRepository = $activityRepository;
     }
 
     /**
@@ -694,28 +697,27 @@ class ProjectStatisticService
      * @param DateTime $today
      * @return ProjectViewModel[]
      */
-    public function getProjectView(User $user, array $projects, DateTime $today): array
+    public function getProjectView(User $user, array $projects, DateTime $today, bool $filterByMonth = false, DateTime $monthFilter = null): array
     {
         $factory = DateTimeFactory::createByUser($user);
         $today = clone $today;
-
         $startOfWeek = $factory->getStartOfWeek($today);
         $endOfWeek = $factory->getEndOfWeek($today);
         $startMonth = (clone $startOfWeek)->modify('first day of this month');
         $endMonth = (clone $startOfWeek)->modify('last day of this month');
-
+    
         $projectViews = [];
         foreach ($projects as $project) {
             $projectViews[$project->getId()] = new ProjectViewModel($project);
         }
-
+    
         $budgetStats = $this->getBudgetStatisticModelForProjects($projects, $today);
         foreach ($budgetStats as $model) {
             $projectViews[$model->getProject()->getId()]->setBudgetStatisticModel($model);
         }
-
+    
         $projectIds = array_keys($projectViews);
-
+    
         $tplQb = $this->timesheetRepository->createQueryBuilder('t');
         $tplQb
             ->select('IDENTITY(t.project) AS id')
@@ -726,10 +728,10 @@ class ProjectStatisticService
             ->groupBy('t.project')
             ->setParameter('project', array_values($projectIds))
         ;
-
+    
         $qb = clone $tplQb;
         $qb->addSelect('MAX(t.date) as lastRecord');
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setDurationTotal($row['duration']);
@@ -740,19 +742,19 @@ class ProjectStatisticService
                 $projectViews[$row['id']]->setLastRecord($factory->createDateTime($row['lastRecord']));
             }
         }
-
+    
         // values for today
         $qb = clone $tplQb;
         $qb
             ->andWhere('DATE(t.date) = :start_date')
             ->setParameter('start_date', $today, Types::DATETIME_MUTABLE)
         ;
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setDurationDay($row['duration'] ?? 0);
         }
-
+    
         // values for the current week
         $qb = clone $tplQb;
         $qb
@@ -760,12 +762,12 @@ class ProjectStatisticService
             ->setParameter('start_date', $startOfWeek, Types::DATETIME_MUTABLE)
             ->setParameter('end_date', $endOfWeek, Types::DATETIME_MUTABLE)
         ;
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setDurationWeek($row['duration']);
         }
-
+    
         // values for the current month
         $qb = clone $tplQb;
         $qb
@@ -773,25 +775,25 @@ class ProjectStatisticService
             ->setParameter('start_date', $startMonth, Types::DATETIME_MUTABLE)
             ->setParameter('end_date', $endMonth, Types::DATETIME_MUTABLE)
         ;
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setDurationMonth($row['duration']);
         }
-
+    
         // values for all time (not exported)
         $qb = clone $tplQb;
         $qb
             ->andWhere('t.exported = :exported')
             ->setParameter('exported', false, Types::BOOLEAN)
         ;
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setNotExportedDuration($row['duration']);
             $projectViews[$row['id']]->setNotExportedRate($row['rate']);
         }
-
+    
         // values for all time (not exported and billable)
         $qb = clone $tplQb;
         $qb
@@ -800,13 +802,13 @@ class ProjectStatisticService
             ->setParameter('exported', false, Types::BOOLEAN)
             ->setParameter('billable', true, Types::BOOLEAN)
         ;
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setNotBilledDuration($row['duration']);
             $projectViews[$row['id']]->setNotBilledRate($row['rate']);
         }
-
+    
         // values for all time (none billable)
         $qb = clone $tplQb;
         $qb
@@ -814,15 +816,16 @@ class ProjectStatisticService
             ->groupBy('t.project')
             ->setParameter('billable', true, Types::BOOLEAN)
         ;
-
+    
         $result = $qb->getQuery()->getScalarResult();
         foreach ($result as $row) {
             $projectViews[$row['id']]->setBillableDuration($row['duration']);
             $projectViews[$row['id']]->setBillableRate($row['rate']);
         }
-
+    
         return array_values($projectViews);
     }
+
 
     /**
      * 
@@ -840,15 +843,15 @@ class ProjectStatisticService
 
         $result = $qb->getQuery()->getResult();
 
-        $formattedResult = [];
+        $dateTimeResult = [];
         foreach ($result as $row) {
             $date = $row['begin'];
             if ($date instanceof DateTime) {
-                $formattedResult[] = $date->format('F Y'); 
+                $dateTimeResult[] = (clone $date)->modify('first day of this month midnight');     
             }
         }
 
-        return $formattedResult;
+        return $dateTimeResult;
     }
 
 
@@ -856,13 +859,18 @@ class ProjectStatisticService
     {
         $qb = $this->timesheetRepository->createQueryBuilder('t');
         $qb
-            ->select('DISTINCT u.alias') 
+            ->select('u.id') // Select user IDs
             ->join('t.user', 'u')
             ->where('t.project = :projectId')
             ->setParameter('projectId', $projectId)
+            ->groupBy('u.id') // Group by user ID to ensure uniqueness
             ->orderBy('u.alias', 'ASC');
 
-        $result = array_column($qb->getQuery()->getResult(), 'alias');
+            $userIds = $qb->getQuery()->getArrayResult(); // Get an array of user IDs
+
+        // Now, fetch User entities based on IDs
+        $result = $this->userRepository->findByIds($userIds);
+    
         return $result;
     }
 
@@ -870,13 +878,17 @@ class ProjectStatisticService
     {
         $qb = $this->timesheetRepository->createQueryBuilder('t');
         $qb
-            ->select('DISTINCT a.name')
+            ->select('a.id')
             ->join('t.activity', 'a') 
             ->where('t.project = :projectId')
             ->setParameter('projectId', $projectId)
+            ->groupBy('a.id')
             ->orderBy('a.name', 'ASC');
 
-        $result = array_column($qb->getQuery()->getResult(), 'name');
+        
+        $activityIds = $qb->getQuery()->getArrayResult();
+        $result = $this->activityRepository->findByIds($activityIds);
+    
         return $result;
     }
 }

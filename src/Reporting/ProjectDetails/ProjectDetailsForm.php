@@ -19,6 +19,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use DateTime;
+
 class ProjectDetailsForm extends AbstractType
 {
     /*
@@ -79,12 +81,18 @@ class ProjectDetailsForm extends AbstractType
             'required' => false,
         ])
         
+        
         //Dinamically update the month field, to show only the active months of the project.
         ->addEventListener(FormEvents::PRE_SUBMIT, function (PreSubmitEvent $event): void {
             $data = $event->getData();
             $form = $event->getForm();
-            $previousProjectId = $this->session->get('previousProjectId')?? null;       
+            dump($this->session);
+            // Set default values if keys are not present
+            $previousProjectId = $this->session->get('previousProjectId') ?? null;       
             $selectedProjectId = $data['project'] ?? null;
+            $data['month'] = $data['month'] ?? null;
+            $data['selectedUser'] = $data['selectedUser'] ?? null;
+            $data['activity'] = $data['activity'] ?? null;
 
             //This clears the month data, if only the project field has been updated.
             if ($previousProjectId != $selectedProjectId){
@@ -96,20 +104,25 @@ class ProjectDetailsForm extends AbstractType
 
             if ($selectedProjectId){
                 $activeMonths = $this->service->findMonthsForProject($selectedProjectId);
-                $activeUsers = $this->service->findUsersForProject($selectedProjectId);
-                $activities = $this->service->findActivitiesForProject($selectedProjectId);
+                $data['month'] = ($data['month'] != null) ? new DateTime($data['month']) : null;
+                
+                $activeUsers = $this->service->findUsersForProject($selectedProjectId, $data['month']);
+                $activities = $this->service->findActivitiesForProject($selectedProjectId, $data['month']);
+        
 
                 $form->add('month', ChoiceType::class, [
                     'choices' => $activeMonths,
                     'choice_label'=> function($month){
-                        return $month->format('F Y');
+                        return $month instanceof DateTime ? $month->format('F Y') : '';
+                    },
+                    'choice_value'=> function($month){
+                        return $month instanceof DateTime ? $month->format('Y-m-d H:i:s') : '';
                     },
                     'placeholder' => 'Filter by month',
                     'label' => false, 
                     'required' => false, 
                 ])
 
-                
                 ->add('selectedUser', ChoiceType::class, [
                     'choices' => $activeUsers,
                     'choice_label' => function($user) {

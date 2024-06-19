@@ -158,7 +158,7 @@
     {% endif %}
 
     {% if hasData %}
-        {{ _self.project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users, form) }}
+        {{ _self.project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users, form, selectedMonth) }}
         {% set currency = project.customer.currency %}
 
         {%- for yearStat in project_details.years|reverse %}
@@ -290,7 +290,7 @@
     view_revenue     = boolean
 #}
 {% macro activity_tab(activities, totalDuration, currency, chartPrefix, view_revenue) %}
-    
+    {{dump(activities)}}
     {% set dataset = [] %}
     {% set labels = [] %}
     <div class="row">
@@ -325,8 +325,14 @@
     project_view    = ProjectViewModel
     project_details = ProjectDetailsModel
 #}
-{% macro project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users, form) %}
-    {% set activities = project_details.activities %}
+{% macro project_details(project, project_view, project_details, showMoneyBudget, showTimeBudget, view_revenue, see_users, form, selectedMonth) %}
+    
+    {% if selectedMonth %}
+        {% set activities = project_details.monthActivities(selectedMonth) %}
+    {% else %}    
+        {% set activities = project_details.activities %}
+    {% endif %}
+
     {% set years = project_details.years %}
     {% import "macros/progressbar.html.twig" as progress %}
     {% import "macros/widgets.html.twig" as widgets %}
@@ -518,7 +524,7 @@
                             {% set totalDuration = 0 %}
                             {% set datasets = [] %}
                             {% set labels = [] %}
-                            {% for userStat in project_details.userStats|sort((a, b) => b.duration <=> a.duration) %}
+                            {% for userStat in project_details.userStats(selectedMonth)|sort((a, b) => b.duration <=> a.duration) %}
                                 {% set user = userStat.user %}
                                 {% set color = user.color|colorize(user.displayName) %}
                                 {% set rateTotal = rateTotal + userStat.rate %}

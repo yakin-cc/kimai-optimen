@@ -57,4 +57,16 @@ final class UserYear
 
         return $rate;
     }
+
+    public function getDurationForMonth(int $monthNumber): int
+    {
+        $month = $this->year->getMonth($monthNumber);
+        return $month ? $month->getDuration() : 0;
+    }
+
+    public function getRateForMonth(int $monthNumber): float
+    {
+        $month = $this->year->getMonth($monthNumber);
+        return $month ? $month->getRate() : 0.0;
+    }
 }

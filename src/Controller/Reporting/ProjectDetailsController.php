@@ -38,35 +38,30 @@ final class ProjectDetailsController extends AbstractController
         $user = $this->getUser();
         $projectView = null;
         $projectDetails = null;
+        $selectedTab = $request->get('tab', 'details');
 
         $query = new ProjectDetailsQuery($dateFactory->createDateTime(), $user);
         $form = $this->createForm(ProjectDetailsForm::class, $query, ['attr' => ['name' => 'project_details_form'], 'user' => $user]);
         $form->submit($request->query->all(), false);
 
+        $selectedMonth = $query->getMonth();
+        $selectedActivity = $query->getActivity();
+        $selectedUser = $query->getSelectedUser();
+
         if ($query->getProject() !== null && $this->isGranted('details', $query->getProject())) {
-            $projectViews = $service->getProjectView($user, [$query->getProject()], $query->getToday());
+        
+            $projectViews = $service->getProjectView($user, [$query->getProject()], $query->getToday(), $selectedMonth);
             $projectView = $projectViews[0];
-            $projectDetails = $service->getProjectsDetails($query);
+        
+            $projectDetails = $service->getProjectsDetails($query, $selectedMonth, $selectedUser, $selectedActivity);
         }
-
-        if ($query->getMonth() !== null && $this->isGranted('details', $query->getProject())){
-            $selectedMonth = $query ->getMonth();
-            $projectViews = $service->getProjectView($user, [$query->getProject()], $query->getToday(), true, $selectedMonth);
-            $projectView = $projectViews[0];
-        }
-
-        if ($query->getActivity() !== null && $this->isGranted('details', $query->getProject())){
-            $selectedActivity = $query->getActivity();
-        }
-
-        if($query->getSelectedUser() !== null && $this->isGranted('details', $query->getProject())){
-            $selectedUser = $query->getSelectedUser();
-        }
+        
 
         return $this->render('reporting/project_details.html.twig', [
             'project' => $query->getProject(),
             'project_view' => $projectView,
             'project_details' => $projectDetails,
+            'selectedMonth' => $selectedMonth,
             'form' => $form->createView(),
             'now' => $this->getDateTimeFactory()->createDateTime(),
         ]);

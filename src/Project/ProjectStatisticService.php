@@ -386,15 +386,14 @@ class ProjectStatisticService
     }
 
     /**
-     * @param ProjectDetailsQuery $query
-     * @return ProjectDetailsModel
-     */
+    * @param ProjectDetailsQuery
+    * @return ProjectDetailsModel
+    */
     public function getProjectsDetails(ProjectDetailsQuery $query): ProjectDetailsModel
     {
         $project = $query->getProject();
         $model = new ProjectDetailsModel($project);
         $model->setBudgetStatisticModel($this->getBudgetStatisticModel($project, $query->getToday()));
-
         $qb = $this->timesheetRepository->createQueryBuilder('t');
         $qb
             ->select('COALESCE(SUM(t.duration), 0) as duration')
@@ -629,6 +628,58 @@ class ProjectStatisticService
             }
         }
         // ---------------------------------------------------
+        // Populate monthly activities
+        $monthActivities = [];
+        foreach ($years as $yearName => $yearStat) {
+            for ($monthNumber = 1; $monthNumber <= 12; $monthNumber++) {
+                // fetch monthly stats grouped by ACTIVITY, YEAR and MONTH
+                $qb2 = clone $qb;
+                $qb2
+                    ->leftJoin(Activity::class, 'a', Join::WITH, 'a.id = t.activity')
+                    ->addSelect('a as activity')
+                    ->addSelect('YEAR(t.date) as year')
+                    ->addSelect('MONTH(t.date) as month')
+                    ->andWhere('YEAR(t.date) = :year')
+                    ->andWhere('MONTH(t.date) = :month')
+                    ->setParameter('year', $yearName)
+                    ->setParameter('month', $monthNumber)
+                    ->addGroupBy('year')
+                    ->addGroupBy('month')
+                    ->addGroupBy('a');
+
+                foreach ($qb2->getQuery()->getResult() as $tmp) {
+                    $activityId = $tmp['activity']->getId();
+                    $yearMonth = $yearName . '-' . str_pad($monthNumber, 2, '0', STR_PAD_LEFT);
+
+                    if (!\array_key_exists($yearMonth, $monthActivities)) {
+                        $monthActivities[$yearMonth] = [];
+                    }
+                    if (!\array_key_exists($activityId, $monthActivities[$yearMonth])) {
+                        $activity = new ActivityStatistic();
+                        $activity->setActivity($tmp['activity']);
+                        $monthActivities[$yearMonth][$activityId] = $activity;
+                    } else {
+                        $activity = $monthActivities[$yearMonth][$activityId];
+                    }
+                    $activity->setRecordRate($activity->getRecordRate() + $tmp['rate']);
+                    $activity->setRecordDuration($activity->getRecordDuration() + $tmp['duration']);
+                    $activity->setInternalRate($activity->getInternalRate() + $tmp['internalRate']);
+                    $activity->setCounter($activity->getCounter() + $tmp['count']);
+
+                    if ($tmp['billable']) {
+                        $activity->setDurationBillable($activity->getDurationBillable() + $tmp['duration']);
+                        $activity->setRateBillable($activity->getRateBillable() + $tmp['rate']);
+                    }
+                }
+            }
+        }
+
+        foreach ($monthActivities as $yearMonth => $activities) {
+            foreach ($activities as $activity) {
+                list($year, $month) = explode('-', $yearMonth);
+                $model->addMonthActivity($year, $month, $activity);
+            }
+        }
 
         return $model;
     }
@@ -697,7 +748,7 @@ class ProjectStatisticService
      * @param DateTime $today
      * @return ProjectViewModel[]
      */
-    public function getProjectView(User $user, array $projects, DateTime $today, bool $filterByMonth = false, DateTime $monthFilter = null): array
+    public function getProjectView(User $user, array $projects, DateTime $today, ?DateTime $inputMonth = null): array
     {
         $factory = DateTimeFactory::createByUser($user);
         $today = clone $today;
@@ -728,7 +779,18 @@ class ProjectStatisticService
             ->groupBy('t.project')
             ->setParameter('project', array_values($projectIds))
         ;
-    
+        
+        // Apply month filter if inputMonth is provided
+        if ($inputMonth !== null) {
+            $startOfMonth = clone $inputMonth;
+            $endOfMonth = clone $inputMonth;
+            $endOfMonth->modify('last day of this month')->setTime(23, 59, 59);
+
+            $tplQb->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
+            ->setParameter('startOfMonth', $startOfMonth)
+            ->setParameter('endOfMonth', $endOfMonth);
+        }
+
         $qb = clone $tplQb;
         $qb->addSelect('MAX(t.date) as lastRecord');
     
@@ -847,7 +909,9 @@ class ProjectStatisticService
         foreach ($result as $row) {
             $date = $row['begin'];
             if ($date instanceof DateTime) {
-                $dateTimeResult[] = (clone $date)->modify('first day of this month midnight');     
+                $unformattedDate = (clone $date)->modify('first day of this month midnight');
+                $formattedDate = $unformattedDate->format('F Y');
+                $dateTimeResult[$formattedDate] = $unformattedDate;
             }
         }
 
@@ -855,7 +919,7 @@ class ProjectStatisticService
     }
 
 
-    public function findUsersForProject(int $projectId): array
+    public function findUsersForProject(int $projectId, ?DateTime $inputMonth = null): array
     {
         $qb = $this->timesheetRepository->createQueryBuilder('t');
         $qb
@@ -866,6 +930,16 @@ class ProjectStatisticService
             ->groupBy('u.id') // Group by user ID to ensure uniqueness
             ->orderBy('u.alias', 'ASC');
 
+        if ($inputMonth !== null) {
+            $startOfMonth = clone $inputMonth;
+            $endOfMonth = clone $inputMonth;
+            $endOfMonth->modify('last day of this month')->setTime(23, 59, 59);
+
+            $qb->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
+            ->setParameter('startOfMonth', $startOfMonth)
+            ->setParameter('endOfMonth', $endOfMonth);
+        }
+
             $userIds = $qb->getQuery()->getArrayResult(); // Get an array of user IDs
 
         // Now, fetch User entities based on IDs
@@ -874,7 +948,7 @@ class ProjectStatisticService
         return $result;
     }
 
-    public function findActivitiesForProject(int $projectId): array
+    public function findActivitiesForProject(int $projectId, ?DateTime $inputMonth = null, ?int $inputUser = null): array
     {
         $qb = $this->timesheetRepository->createQueryBuilder('t');
         $qb
@@ -884,8 +958,17 @@ class ProjectStatisticService
             ->setParameter('projectId', $projectId)
             ->groupBy('a.id')
             ->orderBy('a.name', 'ASC');
-
         
+        if ($inputMonth !== null) {
+            $startOfMonth = clone $inputMonth;
+            $endOfMonth = clone $inputMonth;
+            $endOfMonth->modify('last day of this month')->setTime(23, 59, 59);
+
+            $qb->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
+            ->setParameter('startOfMonth', $startOfMonth)
+            ->setParameter('endOfMonth', $endOfMonth);
+        }  
+
         $activityIds = $qb->getQuery()->getArrayResult();
         $result = $this->activityRepository->findByIds($activityIds);
     

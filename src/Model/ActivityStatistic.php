@@ -9,6 +9,7 @@
 
 namespace App\Model;
 
+use App\Entity\User;
 use App\Entity\Activity;
 use App\Model\Statistic\BudgetStatistic;
 

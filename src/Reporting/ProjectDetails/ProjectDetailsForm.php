@@ -11,6 +11,7 @@ namespace App\Reporting\ProjectDetails;
 
 use App\Form\Type\ProjectType;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use App\Project\ProjectStatisticService;
 use Symfony\Component\Form\AbstractType;
@@ -20,6 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use DateTime;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
 class ProjectDetailsForm extends AbstractType
 {
@@ -37,7 +39,7 @@ class ProjectDetailsForm extends AbstractType
         $this->service = $service;
         $this->session = $session;
     }
-    
+
     /**
      * Simplify cross linking between pages by removing the block prefix.
      *
@@ -47,11 +49,21 @@ class ProjectDetailsForm extends AbstractType
     {
         return null;
     }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $formBuilder = $this->addProjectField($builder);
+        $formBuilder = $this->addMonthField($formBuilder);
+        $formBuilder = $this->addUserField($formBuilder);
+        $formBuilder = $this->addActivityField($formBuilder);
+        $formBuilder = $this->addResetButton($formBuilder);
+
+        $formBuilder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
+    }
+
+    private function addProjectField(FormBuilderInterface $builder)
     {
         $builder->add('project', ProjectType::class, [
             'ignore_date' => true,
@@ -59,100 +71,146 @@ class ProjectDetailsForm extends AbstractType
             'label' => false,
             'width' => false,
             'join_customer' => true,
-        ])
-
-        ->add('month', ChoiceType::class, [
+        ]);
+    
+        return $builder;
+    }
+    
+    private function addMonthField(FormBuilderInterface $builder)
+    {
+        $builder->add('month', ChoiceType::class, [
             'choices' => [],
             'placeholder' => 'Filter by month',
-            'label' => false, 
-            'required' => false, 
-        ])
-
-        ->add('selectedUser', ChoiceType::class, [
+            'label' => false,
+            'required' => false,
+        ]);
+    
+        return $builder;
+    }
+    
+    private function addUserField(FormBuilderInterface $builder)
+    {
+        $builder->add('selectedUser', ChoiceType::class, [
             'choices' => [],
             'placeholder' => 'Filter by user',
-            'label' => false, 
-            'required' => false, 
-        ])
-        ->add('activity', ChoiceType::class, [
+            'label' => false,
+            'required' => false,
+        ]);
+    
+        return $builder;
+    }
+    
+    private function addActivityField(FormBuilderInterface $builder)
+    {
+        $builder->add('activity', ChoiceType::class, [
             'choices' => [],
-            'placeholder' => 'Filter ',
+            'placeholder' => 'Filter by activity',
+            'label' => false,
+            'required' => false,
+        ]);
+    
+        return $builder;
+    }
+    
+    private function addResetButton(FormBuilderInterface $builder)
+    {
+        $builder->add('reset', ButtonType::class, [
+            'label' => 'Reset Filters',
+            'attr' => ['class' => 'btn btn-secondary', 'onclick' => 'resetFilters()'],
+        ]);
+    
+        return $builder;
+    }
+    
+    public function onPreSubmit(FormEvent $event)
+    {
+        $data = $event->getData();
+        $form = $event->getForm();
+        $data = $this->getDefaultData($data);
+        $selectedProjectId = $data['project'] ?? null;
+
+        // Reset fields if project has changed
+        if ($this->isProjectChanged($data)) {
+            $data = $this->resetData($data);
+            $event->setData($data);
+        }
+
+        // Update form fields if a project is selected
+        if ($selectedProjectId) {
+            $this->updateFormFields($form, $selectedProjectId, $data);
+            $this->session->set('previousProjectId', $selectedProjectId);
+        }
+    }
+
+    private function getDefaultData(array $data)
+    {
+        return array_merge([
+            'project' => null,
+            'month' => null,
+            'selectedUser' => null,
+            'activity' => null,
+        ], $data);
+    }
+
+    private function isProjectChanged(array $data)
+    {
+        $previousProjectId = $this->session->get('previousProjectId');
+        $currentProjectId = $data['project'] ?? null;
+        return $previousProjectId !== $currentProjectId;
+    }
+
+    private function resetData(array $data)
+    {
+        $data['month'] = null;
+        $data['selectedUser'] = null;
+        $data['activity'] = null;
+        return $data;
+    }
+
+    private function updateFormFields(FormInterface $form, $projectId, array $data)
+    {
+        $months = $this->service->findMonthsForProject($projectId);
+        $data['month'] = ($data['month'] != null) ? new DateTime($data['month']) : null;
+        $users = $this->service->findUsersForProject($projectId, $data['month']);
+        $activities = $this->service->findActivitiesForProject($projectId, $data['month']);
+
+        $form->add('month', ChoiceType::class, [
+            'choices' => $months,
+            'choice_label' => function ($month) {
+                return $month instanceof DateTime ? $month->format('F Y') : '';
+            },
+            'choice_value' => function ($month) {
+                return $month instanceof DateTime ? $month->format('Y-m-d H:i:s') : '';
+            },
+            'placeholder' => 'Filter by month',
             'label' => false,
             'required' => false,
         ])
-        
-        
-        //Dinamically update the month field, to show only the active months of the project.
-        ->addEventListener(FormEvents::PRE_SUBMIT, function (PreSubmitEvent $event): void {
-            $data = $event->getData();
-            $form = $event->getForm();
-            dump($this->session);
-            // Set default values if keys are not present
-            $previousProjectId = $this->session->get('previousProjectId') ?? null;       
-            $selectedProjectId = $data['project'] ?? null;
-            $data['month'] = $data['month'] ?? null;
-            $data['selectedUser'] = $data['selectedUser'] ?? null;
-            $data['activity'] = $data['activity'] ?? null;
-
-            //This clears the month data, if only the project field has been updated.
-            if ($previousProjectId != $selectedProjectId){
-                $data['month'] = null;
-                $data['selectedUser'] = null;
-                $data['activities'] = null;
-                $event->setData($data);
-            }
-
-            if ($selectedProjectId){
-                $activeMonths = $this->service->findMonthsForProject($selectedProjectId);
-                $data['month'] = ($data['month'] != null) ? new DateTime($data['month']) : null;
-                
-                $activeUsers = $this->service->findUsersForProject($selectedProjectId, $data['month']);
-                $activities = $this->service->findActivitiesForProject($selectedProjectId, $data['month']);
-        
-
-                $form->add('month', ChoiceType::class, [
-                    'choices' => $activeMonths,
-                    'choice_label'=> function($month){
-                        return $month instanceof DateTime ? $month->format('F Y') : '';
-                    },
-                    'choice_value'=> function($month){
-                        return $month instanceof DateTime ? $month->format('Y-m-d H:i:s') : '';
-                    },
-                    'placeholder' => 'Filter by month',
-                    'label' => false, 
-                    'required' => false, 
-                ])
-
-                ->add('selectedUser', ChoiceType::class, [
-                    'choices' => $activeUsers,
-                    'choice_label' => function($user) {
-                        return $user->getAlias(); // Method to display the user alias
-                    },
-                    'choice_value' => function($user) {
-                        return $user ? $user->getId() : ''; // Method to get the user ID
-                    },
-                    'placeholder' => 'Filter by user',
-                    'label' => false, 
-                    'required' => false, 
-                ])
-                ->add('activity', ChoiceType::class, [
-                    'choices' => $activities,
-                    'choice_label' => function($activity) {
-                        return $activity->getName(); // Method to display the activity name
-                    },
-                    'choice_value' => function($activity) {
-                        return $activity ? $activity->getId() : ''; // Method to get the activity ID
-                    },
-                    'placeholder' => 'Filter by activity',
-                    'label' => false,
-                    'required' => false,
-                ]);
-    
-                $this->session->set('previousProjectId', $selectedProjectId);
-            }
-        });
+        ->add('selectedUser', ChoiceType::class, [
+            'choices' => $users,
+            'choice_label' => function ($user) {
+                return $user->getAlias();
+            },
+            'choice_value' => function ($user) {
+                return $user ? $user->getId() : '';
+            },
+            'placeholder' => 'Filter by user',
+            'label' => false,
+            'required' => false,
+        ])
+        ->add('activity', ChoiceType::class, [
+            'choices' => $activities,
+            'choice_label' => function ($activity) {
+                return $activity->getName();
+            },
+            'choice_value' => function ($activity) {
+                return $activity ? $activity->getId() : '';
+            },
+            'placeholder' => 'Filter by activity',
+            'label' => false,
+            'required' => false,
+        ]);
     }
-
     /**
      * {@inheritdoc}
      */

@@ -12,10 +12,10 @@ namespace App\Reporting\ProjectDetails;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Model\ActivityStatistic;
+use App\Model\UserStatistic;
 use App\Model\BudgetStatisticModel;
 use App\Model\Statistic\UserYear;
 use App\Model\Statistic\Year;
-use App\Model\UserStatistic;
 use DateTime;
 
 final class ProjectDetailsModel
@@ -32,12 +32,6 @@ final class ProjectDetailsModel
      * @var array<string, array<ActivityStatistic>>
      */
     private $yearlyActivities = [];
-
-    /**
-     * @var array<string, array<ActivityStatistic>>
-     */
-    private $monthlyActivities = [];
-
     /**
      * @var array<string, array<int, UserYear>>
      */
@@ -46,6 +40,11 @@ final class ProjectDetailsModel
      * @var ActivityStatistic[]
      */
     private $activities = [];
+
+    /**
+     * @var UserStatistic[]
+     */
+    private $users = [];
     /**
      * @var BudgetStatisticModel
      */
@@ -93,29 +92,6 @@ final class ProjectDetailsModel
         }
 
         return $this->yearlyActivities[$year];
-    }
-
-    public function addMonthActivity(string $year, string $month, ActivityStatistic $activityStatistic): void
-    {
-        $this->monthlyActivities[$year][$month][] = $activityStatistic;
-    }
-
-    public function getMonthActivities(?DateTime $date = null, ?User $user = null): ?array
-    {
-        if ($date !== null) {
-            $year = $date->format('Y');
-            $month = $date->format('m');
-
-            if (!array_key_exists($year, $this->monthlyActivities) || !array_key_exists($month, $this->monthlyActivities[$year])) {
-                return null;
-            }
-
-            $activities = $this->monthlyActivities[$year][$month];
-        } else {
-            $activities = $this->monthlyActivities;
-        }
-
-        return $activities;
     }
 
     /**
@@ -225,26 +201,18 @@ final class ProjectDetailsModel
         $this->budgetStatisticModel = $budgetStatisticModel;
     }
 
-    public function addUserActivity(?DateTime $date, ?User $user, ?ActivityStatistic $activity)
+    public function getUsers(): array
     {
-        $yearFilter = $date ? $date->format('Y') : null;
-        $monthFilter = $date ? $date->format('m') : null;
-        $userId = $user->getId();
-
-        if (!isset($this->userActivities[$yearFilter][$monthFilter][$userId])) {
-            $this->userActivities[$yearFilter][$monthFilter][$userId] = [];
-        }
-
-        $this->userActivities[$yearFilter][$monthFilter][$userId][] = $activity;
+        return $this->users;
     }
 
-    public function getUserActivities(?DateTime $date, ?User $user)
+    public function setUsers(UserStatistic $users):void
     {
-        $yearFilter = $date ? $date->format('Y') : null;
-        $monthFilter = $date ? $date->format('m') : null;
-        $userId = $user->getId();
+        $this->users = $users;
+    }
 
-        return isset($this->userActivities[$yearFilter][$monthFilter][$userId]) ?
-            $this->userActivities[$yearFilter][$monthFilter][$userId] : [];
+    public function addUser(UserStatistic $userStatistic): void
+    {
+        $this->users[$userStatistic->getUser()->getId()] = $userStatistic;
     }
 }

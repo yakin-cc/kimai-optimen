@@ -389,7 +389,7 @@ class ProjectStatisticService
     * @param ProjectDetailsQuery
     * @return ProjectDetailsModel
     */
-    public function getProjectsDetails(ProjectDetailsQuery $query): ProjectDetailsModel
+    public function getProjectsDetails(ProjectDetailsQuery $query, int $projectId, ?DateTime $inputMonth = null, ?User $inputUser = null, ?Activity $inputActivity): ProjectDetailsModel
     {
         $project = $query->getProject();
         $model = new ProjectDetailsModel($project);
@@ -413,6 +413,24 @@ class ProjectStatisticService
             ->addSelect('a as activity')
             ->addGroupBy('a')
         ;
+
+        if ($inputUser !== null){
+            $userId = $inputUser->getId();
+            $qb1 ->andWhere('t.user = :userId')
+                 ->setParameter('userId', $userId)
+                ;
+        }
+        // Apply month filter if inputMonth is provided
+        if ($inputMonth !== null) {
+            $startOfMonth = clone $inputMonth;
+            $endOfMonth = clone $inputMonth;
+            $endOfMonth->modify('last day of this month')->setTime(23, 59, 59);
+
+            $qb1->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
+                ->setParameter('startOfMonth', $startOfMonth)
+                ->setParameter('endOfMonth', $endOfMonth)
+                ;
+        }
 
         /** @var array<ActivityStatistic> $activities */
         $activities = [];
@@ -441,6 +459,56 @@ class ProjectStatisticService
             $model->addActivity($activity);
         }
         // ---------------------------------------------------
+        //Fetch stats grouped by User for all time
+
+        $qbUsers = clone $qb;
+        $qbUsers 
+            -> leftJoin(User::class, 'u', Join::WITH, 'u.id = t.user')
+            ->addSelect('u as user')
+            ->addGroupBy('u');
+
+            // Apply month filter if inputMonth is provided
+        if ($inputMonth !== null) {
+            $startOfMonth = (clone $inputMonth)->modify('first day of this month')->setTime(0, 0, 0);
+            $endOfMonth = (clone $inputMonth)->modify('last day of this month')->setTime(23, 59, 59);
+            $qbUsers->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
+            ->setParameter('startOfMonth', $startOfMonth)
+            ->setParameter('endOfMonth', $endOfMonth);
+        }
+
+        // Apply activity filter if inputActivity is provided
+        if ($inputActivity !== null) {
+            $qbUsers->andWhere('t.activity = :activityId')
+            ->setParameter('activityId', $inputActivity->getId());
+        }
+
+        /** @var array<UserStatistic> $users */
+        $users = [];
+        foreach ($qbUsers->getQuery()->getResult() as $tmp) {
+            $userId = $tmp['user']->getId();
+            if (!array_key_exists($userId, $users)) {
+                $userStatistic = new UserStatistic($tmp['user']);
+                $users[$userId] = $userStatistic;
+            } else {
+                $userStatistic = $users[$userId];
+            }
+
+            $userStatistic->setRecordRate($userStatistic->getRecordRate() + $tmp['rate']);
+            $userStatistic->setRecordDuration($userStatistic->getRecordDuration() + $tmp['duration']);
+            $userStatistic->setInternalRate($userStatistic->getInternalRate() + $tmp['internalRate']);
+            $userStatistic->setCounter($userStatistic->getCounter() + $tmp['count']);
+
+            if ($tmp['billable']) {
+                $userStatistic->setDurationBillable($userStatistic->getDurationBillable() + $tmp['duration']);
+                $userStatistic->setRateBillable($userStatistic->getRateBillable() + $tmp['rate']);
+            }
+        }
+
+        foreach ($users as $userStatistic) {
+            $model->addUser($userStatistic);
+        }
+
+        dump($model->getUsers());
 
         // fetch stats grouped by YEAR, MONTH and USER
         $qb1 = clone $qb;
@@ -628,58 +696,6 @@ class ProjectStatisticService
             }
         }
         // ---------------------------------------------------
-        // Populate monthly activities
-        $monthActivities = [];
-        foreach ($years as $yearName => $yearStat) {
-            for ($monthNumber = 1; $monthNumber <= 12; $monthNumber++) {
-                // fetch monthly stats grouped by ACTIVITY, YEAR and MONTH
-                $qb2 = clone $qb;
-                $qb2
-                    ->leftJoin(Activity::class, 'a', Join::WITH, 'a.id = t.activity')
-                    ->addSelect('a as activity')
-                    ->addSelect('YEAR(t.date) as year')
-                    ->addSelect('MONTH(t.date) as month')
-                    ->andWhere('YEAR(t.date) = :year')
-                    ->andWhere('MONTH(t.date) = :month')
-                    ->setParameter('year', $yearName)
-                    ->setParameter('month', $monthNumber)
-                    ->addGroupBy('year')
-                    ->addGroupBy('month')
-                    ->addGroupBy('a');
-
-                foreach ($qb2->getQuery()->getResult() as $tmp) {
-                    $activityId = $tmp['activity']->getId();
-                    $yearMonth = $yearName . '-' . str_pad($monthNumber, 2, '0', STR_PAD_LEFT);
-
-                    if (!\array_key_exists($yearMonth, $monthActivities)) {
-                        $monthActivities[$yearMonth] = [];
-                    }
-                    if (!\array_key_exists($activityId, $monthActivities[$yearMonth])) {
-                        $activity = new ActivityStatistic();
-                        $activity->setActivity($tmp['activity']);
-                        $monthActivities[$yearMonth][$activityId] = $activity;
-                    } else {
-                        $activity = $monthActivities[$yearMonth][$activityId];
-                    }
-                    $activity->setRecordRate($activity->getRecordRate() + $tmp['rate']);
-                    $activity->setRecordDuration($activity->getRecordDuration() + $tmp['duration']);
-                    $activity->setInternalRate($activity->getInternalRate() + $tmp['internalRate']);
-                    $activity->setCounter($activity->getCounter() + $tmp['count']);
-
-                    if ($tmp['billable']) {
-                        $activity->setDurationBillable($activity->getDurationBillable() + $tmp['duration']);
-                        $activity->setRateBillable($activity->getRateBillable() + $tmp['rate']);
-                    }
-                }
-            }
-        }
-
-        foreach ($monthActivities as $yearMonth => $activities) {
-            foreach ($activities as $activity) {
-                list($year, $month) = explode('-', $yearMonth);
-                $model->addMonthActivity($year, $month, $activity);
-            }
-        }
 
         return $model;
     }
@@ -948,7 +964,7 @@ class ProjectStatisticService
         return $result;
     }
 
-    public function findActivitiesForProject(int $projectId, ?DateTime $inputMonth = null, ?int $inputUser = null): array
+    public function findActivitiesForProject(int $projectId, ?DateTime $inputMonth = null): array
     {
         $qb = $this->timesheetRepository->createQueryBuilder('t');
         $qb
@@ -967,7 +983,7 @@ class ProjectStatisticService
             $qb->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
             ->setParameter('startOfMonth', $startOfMonth)
             ->setParameter('endOfMonth', $endOfMonth);
-        }  
+        }
 
         $activityIds = $qb->getQuery()->getArrayResult();
         $result = $this->activityRepository->findByIds($activityIds);

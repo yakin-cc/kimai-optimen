@@ -1,6 +1,6 @@
 {# project \App\Entity\Project #}
 {# details \App\Reporting\ProjectDetails\ProjectDetailsModel #}
-{% macro project_budget(project, details, prefix) %}
+{% macro project_budget(project, details, prefix, selectedMonth) %}
     {% set chartPrefix = (prefix is null ? random() : prefix) ~ 'Budget' %}
     {% set chart = is_granted('budget', project) %}
     {% set showMoneyBudget = is_granted('budget', project) and project.hasBudget() %}
@@ -42,7 +42,57 @@
                     {% endif %}
                 {% endfor %}
             {% endfor %}
-            {{ bar_chart(chartPrefix, chartLabels, [chartData], {'height': '300px', 'renderEvent': 'render.' ~ chartPrefix}) }}
+        {# ------------------------------ Render daily statistics for the selected month -------------------------------------------  #}
+        {% elseif selectedMonth is not empty %}
+             <h4>
+                {%- if showMoneyBudget %}{{ 'label.budget'|trans }}{% else %}{{ 'label.timeBudget'|trans }}{% endif -%}
+            </h4>
+
+            {% if showMoneyBudget %}
+                {% set totalBudget = project.getBudget() %}
+            {% else %}
+                {% set totalBudget = project.getTimeBudget() %}
+            {% endif %}
+            {% set chartData = [] %}
+            {% set chartLabels = [] %}
+            {% set sortedDays = details.days|sort((a, b) => a.day <=> b.day) %}
+
+            {% for year in details.years %}
+                {% for month in year.months %}
+                    {% if year.year == selectedMonth | date('Y') and month.month == selectedMonth | date('m') %}
+                        {% for day in sortedDays %}
+                            {% set currentTotalBudget = totalBudget %}
+
+                            {% if showMoneyBudget %}
+                                {% if day.rate is defined %}
+                                    {% set currentTotalBudget = currentTotalBudget - day.rate %}
+                                {% endif %}
+                            {% else %}
+                                {% if day.duration is defined %}
+                                    {% set currentTotalBudget = currentTotalBudget - day.duration %}
+                                {% endif %}
+                            {% endif %}
+                            {% set chartLabels = chartLabels|merge([day.day|date('F-d')]) %}
+                            {% set chartValue = {
+                                'label': showMoneyBudget ? currentTotalBudget|money(currency) : currentTotalBudget|duration,
+                                'value': '' ~ (showMoneyBudget ? currentTotalBudget|chart_money : currentTotalBudget|chart_duration),
+                            } %}
+                            
+                            {% set chartData = chartData|merge([chartValue]) %}
+                            {% set totalBudget = currentTotalBudget %}
+                        {% endfor %}
+                        {{ bar_chart(chartPrefix, chartLabels, [chartData], {'height': '300px', 'renderEvent': 'render.' ~ chartPrefix, 'type': 'line'}) }}
+                    {% endif %}
+
+                    {% if showMoneyBudget %}
+                        {% set totalBudget = totalBudget - month.billableRate %}
+                    {% else %}
+                        {% set totalBudget = totalBudget - month.billableDuration %}
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
         {% else %}
             <h4>
                 {%- if showMoneyBudget %}{{ 'label.budget'|trans }}{% else %}{{ 'label.timeBudget'|trans }}{% endif -%}

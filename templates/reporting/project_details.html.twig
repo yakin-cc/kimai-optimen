@@ -465,7 +465,7 @@
                     <div class="col-xs-12 col-md-6">
                         {% if (showMoneyBudget and project.hasBudget()) or (showTimeBudget and project.hasTimeBudget()) %}
                             {% from "project/charts.html.twig" import project_budget %}
-                            {{ project_budget(project, project_details, chartPrefix) }}
+                            {{ project_budget(project, project_details, chartPrefix, selectedMonth) }}
                         {% endif %}
                     </div>
                 </div>

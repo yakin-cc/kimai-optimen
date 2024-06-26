@@ -9,34 +9,35 @@
 
 namespace App\Project;
 
-use App\Entity\Activity;
-use App\Entity\Project;
-use App\Entity\Timesheet;
+use DateTime;
 use App\Entity\User;
-use App\Event\ProjectBudgetStatisticEvent;
-use App\Event\ProjectStatisticEvent;
-use App\Form\Model\DateRange;
-use App\Model\ActivityStatistic;
-use App\Model\ProjectBudgetStatisticModel;
-use App\Model\ProjectStatistic;
-use App\Model\Statistic\Month;
-use App\Model\Statistic\Year;
+use App\Entity\Project;
+use App\Entity\Activity;
+use App\Entity\Timesheet;
+use App\Model\Statistic\Day;
 use App\Model\UserStatistic;
-use App\Reporting\ProjectDateRange\ProjectDateRangeQuery;
+use App\Form\Model\DateRange;
+use App\Model\Statistic\Year;
+use App\Model\Statistic\Month;
+use Doctrine\DBAL\Types\Types;
+use App\Model\ProjectStatistic;
+use App\Model\ActivityStatistic;
+use Doctrine\ORM\Query\Expr\Join;
+use App\Repository\UserRepository;
+use App\Timesheet\DateTimeFactory;
+use App\Event\ProjectStatisticEvent;
+use App\Repository\ProjectRepository;
+use App\Repository\ActivityRepository;
+use App\Repository\TimesheetRepository;
+use App\Repository\Loader\ProjectLoader;
+use App\Event\ProjectBudgetStatisticEvent;
+use App\Model\ProjectBudgetStatisticModel;
+use App\Reporting\ProjectView\ProjectViewModel;
+use App\Reporting\ProjectView\ProjectViewQuery;
 use App\Reporting\ProjectDetails\ProjectDetailsModel;
 use App\Reporting\ProjectDetails\ProjectDetailsQuery;
 use App\Reporting\ProjectInactive\ProjectInactiveQuery;
-use App\Reporting\ProjectView\ProjectViewModel;
-use App\Reporting\ProjectView\ProjectViewQuery;
-use App\Repository\Loader\ProjectLoader;
-use App\Repository\ProjectRepository;
-use App\Repository\TimesheetRepository;
-use App\Repository\ActivityRepository;
-use App\Repository\UserRepository;
-use App\Timesheet\DateTimeFactory;
-use DateTime;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Query\Expr\Join;
+use App\Reporting\ProjectDateRange\ProjectDateRangeQuery;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -696,6 +697,56 @@ class ProjectStatisticService
             }
         }
         // ---------------------------------------------------
+        if ($inputMonth !== null) {
+            $startOfMonth = (clone $inputMonth)->modify('first day of this month')->setTime(0, 0, 0);
+            $endOfMonth = (clone $inputMonth)->modify('last day of this month')->setTime(23, 59, 59);
+        
+            $qbDays = $this->timesheetRepository->createQueryBuilder('t');
+            $qbDays
+                ->select('DATE(t.begin) as day, COALESCE(SUM(t.duration), 0) as duration, COALESCE(SUM(t.rate), 0) as rate, t.billable as billable')
+                ->andWhere('t.project = :project')
+                ->andWhere('t.begin BETWEEN :startOfMonth AND :endOfMonth')
+                ->setParameter('project', $project)
+                ->setParameter('startOfMonth', $startOfMonth)
+                ->setParameter('endOfMonth', $endOfMonth)
+                ->groupBy('day, billable');
+        
+            // Execute the query and fetch results
+            $results = $qbDays->getQuery()->getResult();
+        
+            // Initialize an array to track existing days
+            $existingDays = [];
+        
+            foreach ($results as $result) {
+                $day = new Day(new DateTime($result['day']), $result['duration'], $result['rate']);
+        
+                // If the day is billable, set the total duration billable
+                if ($result['billable']) {
+                    $day->setTotalDurationBillable($result['duration']);
+                }
+        
+                // Add day to the model and track its existence
+                $model->addDay($day);
+                $existingDays[$result['day']] = true; // Mark this day as existing
+            }
+        
+            // Add empty days for days that have no data
+            $currentDay = (clone $startOfMonth)->modify('midnight');
+            $lastDay = (clone $endOfMonth)->modify('midnight');
+        
+            while ($currentDay <= $lastDay) {
+                $currentDayString = $currentDay->format('Y-m-d');
+        
+                if (!isset($existingDays[$currentDayString])) {
+                    // Create a new Day object with empty values
+                    $emptyDay = new Day(clone $currentDay, 0, 0);
+                    $model->addDay($emptyDay);
+                }
+        
+                // Move to the next day
+                $currentDay->modify('+1 day');
+            }
+        }
 
         return $model;
     }

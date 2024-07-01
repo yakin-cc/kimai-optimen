@@ -30,6 +30,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 /**
  * User profile controller
@@ -230,7 +231,24 @@ final class ProfileController extends AbstractController
         foreach ($profile->getPreferences() as $preference) {
             $original[$preference->getName()] = $preference;
         }
-
+        
+        // Find or create the session timeout preference
+        $sessionTimeoutPreference = null;
+        foreach ($profile->getPreferences() as $preference) {
+            if ($preference->getName() === UserPreference::SESSION_TIMEOUT) {
+                $sessionTimeoutPreference = $preference;
+                break;
+            }
+        }
+        if (!$sessionTimeoutPreference) {
+            $sessionTimeoutPreference = new UserPreference();
+            $sessionTimeoutPreference->setName(UserPreference::SESSION_TIMEOUT);
+            $sessionTimeoutPreference->setUser($profile);
+            $sessionTimeoutPreference->setType(IntegerType::class);
+            $sessionTimeoutPreference->setValue(600); // Set default value
+            $sessionTimeoutPreference->setEnabled(true);
+            $profile->getPreferences()->add($sessionTimeoutPreference);
+        }
         $form = $this->createPreferencesForm($profile);
         $form->handleRequest($request);
 
@@ -238,11 +256,10 @@ final class ProfileController extends AbstractController
             if ($form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $preferences = $profile->getPreferences();
-
                 // do not allow to add unknown preferences
                 foreach ($preferences as $preference) {
-                    if (!isset($original[$preference->getName()])) {
-                        $preferences->removeElement($preference);
+                    if (!$preference->getId()) {
+                        $entityManager->persist($preference); // Persist all new preferences
                     }
                 }
 
@@ -305,7 +322,8 @@ final class ProfileController extends AbstractController
             $user,
             [
                 'action' => $this->generateUrl('user_profile_preferences', ['username' => $user->getUsername()]),
-                'method' => 'POST'
+                'method' => 'POST',
+                //'session_timeout' => $user->getPreferenceValue(UserPreference::SESSION_TIMEOUT),
             ]
         );
     }

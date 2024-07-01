@@ -10,14 +10,15 @@
 namespace App\Form\Type;
 
 use App\Entity\UserPreference;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
  * Custom form field type to edit a user preference.
@@ -41,15 +42,16 @@ class UserPreferenceType extends AbstractType
             function (FormEvent $event) {
                 /** @var UserPreference $preference */
                 $preference = $event->getData();
+                dump($preference);
 
                 if (!($preference instanceof UserPreference)) {
                     return;
                 }
 
                 // prevents unconfigured values from showing up in the form
-                if ($preference->getType() === null) {
-                    return;
-                }
+                //if ($preference->getType() === null) {
+                //    return;
+                //}
 
                 $required = true;
                 if (CheckboxType::class === $preference->getType()) {
@@ -79,7 +81,7 @@ class UserPreferenceType extends AbstractType
                 $event->getForm()->add('value', $type, $options);
             }
         );
-        $builder->add('name', HiddenType::class);
+        $builder->add('name', HiddenType::class); 
     }
 
     public function configureOptions(OptionsResolver $resolver)

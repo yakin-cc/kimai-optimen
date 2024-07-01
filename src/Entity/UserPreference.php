@@ -36,6 +36,7 @@ class UserPreference
     public const HOUR_24 = 'hours_24';
     public const TIMEZONE = 'timezone';
     public const FIRST_WEEKDAY = 'first_weekday';
+    public const SESSION_TIMEOUT = 'session_timeout';
 
     /**
      * @var int

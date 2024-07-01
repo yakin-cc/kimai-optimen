@@ -15,11 +15,18 @@ framework:
         cookie_secure: auto
         cookie_httponly: true
         cookie_samesite: lax
+        # cookie_lifetime: 7200    # 1 hour
+        # gc_maxlifetime: 7200     # 1 hour
 
     #esi: ~
     #fragments: ~
     php_errors:
         log: true
+    
+    http_client:
+        default_options:
+            verify_host: false
+            verify_peer: false
 
     cache:
         # The app cache caches to the filesystem by default. Other options include:

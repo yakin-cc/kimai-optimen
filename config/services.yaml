@@ -56,6 +56,9 @@ services:
         arguments:
             $settings: '%kimai.config%'
 
+    App\Configuration\SessionTimeoutListener:
+        tags: { name: 'kernel.event_subscriber' }
+
     App\Utils\MPdfConverter:
         arguments:
             $cacheDirectory: '%kernel.cache_dir%'

@@ -42,16 +42,15 @@ class UserPreferenceType extends AbstractType
             function (FormEvent $event) {
                 /** @var UserPreference $preference */
                 $preference = $event->getData();
-                dump($preference);
 
                 if (!($preference instanceof UserPreference)) {
                     return;
                 }
 
-                // prevents unconfigured values from showing up in the form
-                //if ($preference->getType() === null) {
-                //    return;
-                //}
+                //prevents unconfigured values from showing up in the form
+                if ($preference->getType() === null) {
+                    return;
+                }
 
                 $required = true;
                 if (CheckboxType::class === $preference->getType()) {

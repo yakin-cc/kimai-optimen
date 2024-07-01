@@ -30,7 +30,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 
 /**
  * User profile controller
@@ -232,23 +232,6 @@ final class ProfileController extends AbstractController
             $original[$preference->getName()] = $preference;
         }
         
-        // Find or create the session timeout preference
-        $sessionTimeoutPreference = null;
-        foreach ($profile->getPreferences() as $preference) {
-            if ($preference->getName() === UserPreference::SESSION_TIMEOUT) {
-                $sessionTimeoutPreference = $preference;
-                break;
-            }
-        }
-        if (!$sessionTimeoutPreference) {
-            $sessionTimeoutPreference = new UserPreference();
-            $sessionTimeoutPreference->setName(UserPreference::SESSION_TIMEOUT);
-            $sessionTimeoutPreference->setUser($profile);
-            $sessionTimeoutPreference->setType(IntegerType::class);
-            $sessionTimeoutPreference->setValue(600); // Set default value
-            $sessionTimeoutPreference->setEnabled(true);
-            $profile->getPreferences()->add($sessionTimeoutPreference);
-        }
         $form = $this->createPreferencesForm($profile);
         $form->handleRequest($request);
 
@@ -256,10 +239,19 @@ final class ProfileController extends AbstractController
             if ($form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $preferences = $profile->getPreferences();
+
+                $sessionTimeoutPref = $profile->getPreference(UserPreference::SESSION_TIMEOUT);
+                if ($sessionTimeoutPref) {
+                    $interval = $sessionTimeoutPref->getValue();
+                    if ($interval instanceof \DateInterval) {
+                        $sessionTimeoutPref->setValue($interval->format('P%yY%mM%dDT%hH%iM%sS'));
+                    }
+                }
+
                 // do not allow to add unknown preferences
                 foreach ($preferences as $preference) {
-                    if (!$preference->getId()) {
-                        $entityManager->persist($preference); // Persist all new preferences
+                    if (!isset($original[$preference->getName()])) {
+                        $preferences->removeElement($preference);
                     }
                 }
 
@@ -323,7 +315,6 @@ final class ProfileController extends AbstractController
             [
                 'action' => $this->generateUrl('user_profile_preferences', ['username' => $user->getUsername()]),
                 'method' => 'POST',
-                //'session_timeout' => $user->getPreferenceValue(UserPreference::SESSION_TIMEOUT),
             ]
         );
     }

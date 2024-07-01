@@ -9,26 +9,29 @@
 
 namespace App\EventSubscriber;
 
-use App\Configuration\SystemConfiguration;
 use App\Entity\User;
+use App\Form\Type\SkinType;
+use App\Form\Type\ReportType;
 use App\Entity\UserPreference;
 use App\Event\PrepareUserEvent;
+use App\Form\Type\LanguageType;
+use App\Form\Type\TimezoneType;
 use App\Event\UserPreferenceEvent;
+use App\Form\Type\InitialViewType;
+use App\Form\Type\ThemeLayoutType;
 use App\Form\Type\CalendarViewType;
 use App\Form\Type\FirstWeekDayType;
-use App\Form\Type\InitialViewType;
-use App\Form\Type\LanguageType;
-use App\Form\Type\ReportType;
-use App\Form\Type\SkinType;
-use App\Form\Type\ThemeLayoutType;
-use App\Form\Type\TimezoneType;
 use App\Reporting\ReportingService;
+use App\Configuration\SystemConfiguration;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Validator\Constraints\Range;
+
 
 final class UserPreferenceSubscriber implements EventSubscriberInterface
 {
@@ -182,6 +185,29 @@ final class UserPreferenceSubscriber implements EventSubscriberInterface
                 ->setOrder(900)
                 ->setSection('behaviour')
                 ->setType(CheckboxType::class),
+
+            (new UserPreference())
+                ->setName(UserPreference::SESSION_TIMEOUT)
+                ->setValue(new \DateInterval("PT1H"))
+                ->setOrder(1000)
+                ->setType(DateIntervalType::class)
+                ->setEnabled(true)
+                ->addConstraint(new Assert\Range([
+                    'min' => 60,          // Minimum value of 60 seconds (1 minute)
+                    'max' => 86400,       // Maximum value of 86400 seconds (24 hours)
+                    'minMessage' => 'The session timeout must be at least {{ limit }} seconds.',
+                    'maxMessage' => 'The session timeout cannot exceed {{ limit }} seconds.',
+                ]))
+                ->setOptions([
+                    'with_years' => false,
+                    'with_months' => false,
+                    'with_days' => false,
+                    'with_hours' => true,
+                    'with_minutes' => true,
+                    'with_seconds' => true,
+                    'widget' => 'integer', // Use integers for simplicity
+                    'label' => 'Session Timeout',
+                ]),
         ];
     }
 
@@ -206,6 +232,19 @@ final class UserPreferenceSubscriber implements EventSubscriberInterface
                     ->setOrder($preference->getOrder())
                     ->setSection($preference->getSection())
                 ;
+
+                // Convert the stored string to DateInterval
+                if ($userPref->getName() === UserPreference::SESSION_TIMEOUT) {
+                    $value = $userPref->getValue();
+                    if (is_string($value)) {
+                        try {
+                            $userPref->setValue(new \DateInterval($value));
+                        } catch (\Exception $e) {
+                            // Handle invalid DateInterval format if needed
+                        }
+                    }
+                }
+
             } else {
                 $user->addPreference($preference);
             }

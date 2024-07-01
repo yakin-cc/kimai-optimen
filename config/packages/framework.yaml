@@ -15,8 +15,8 @@ framework:
         cookie_secure: auto
         cookie_httponly: true
         cookie_samesite: lax
-        # cookie_lifetime: 7200    # 1 hour
-        # gc_maxlifetime: 7200     # 1 hour
+        cookie_lifetime: 86400    
+        gc_maxlifetime: 86400     # 1 day
 
     #esi: ~
     #fragments: ~

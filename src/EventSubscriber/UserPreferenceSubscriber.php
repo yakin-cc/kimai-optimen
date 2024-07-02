@@ -24,7 +24,7 @@ use App\Form\Type\FirstWeekDayType;
 use App\Reporting\ReportingService;
 use App\Configuration\SystemConfiguration;
 use Symfony\Component\Validator\Constraints\Range;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -192,11 +192,9 @@ final class UserPreferenceSubscriber implements EventSubscriberInterface
                 ->setOrder(1000)
                 ->setType(DateIntervalType::class)
                 ->setEnabled(true)
-                ->addConstraint(new Assert\Range([
-                    'min' => 60,          // Minimum value of 60 seconds (1 minute)
-                    'max' => 86400,       // Maximum value of 86400 seconds (24 hours)
-                    'minMessage' => 'The session timeout must be at least {{ limit }} seconds.',
-                    'maxMessage' => 'The session timeout cannot exceed {{ limit }} seconds.',
+                ->addConstraint(new AppAssert\DateIntervalSessionRange([
+                    'minSeconds' => 60,          // Minimum value of 60 seconds (1 minute)
+                    'maxSeconds' => 86400,       // Maximum value of 86400 seconds (24 hours)
                 ]))
                 ->setOptions([
                     'with_years' => false,
@@ -205,7 +203,7 @@ final class UserPreferenceSubscriber implements EventSubscriberInterface
                     'with_hours' => true,
                     'with_minutes' => true,
                     'with_seconds' => true,
-                    'widget' => 'integer', // Use integers for simplicity
+                    'widget' => 'integer', 
                     'label' => 'Session Timeout',
                 ]),
         ];
@@ -237,11 +235,7 @@ final class UserPreferenceSubscriber implements EventSubscriberInterface
                 if ($userPref->getName() === UserPreference::SESSION_TIMEOUT) {
                     $value = $userPref->getValue();
                     if (is_string($value)) {
-                        try {
-                            $userPref->setValue(new \DateInterval($value));
-                        } catch (\Exception $e) {
-                            // Handle invalid DateInterval format if needed
-                        }
+                        $userPref->setValue(new \DateInterval($value));
                     }
                 }
 

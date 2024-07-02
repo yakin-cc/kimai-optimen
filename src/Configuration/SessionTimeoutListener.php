@@ -2,13 +2,12 @@
 
 namespace App\Configuration;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\UserPreference;
-use App\Entity\User;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SessionTimeoutListener implements EventSubscriberInterface
 {
@@ -34,7 +33,6 @@ class SessionTimeoutListener implements EventSubscriberInterface
 
         if ($user) {
             $timeout = $user->getPreferenceValue(UserPreference::SESSION_TIMEOUT);
-            dump($timeout);
             if ($timeout) {
                 if (is_string($timeout)) {
                     try {
@@ -43,7 +41,6 @@ class SessionTimeoutListener implements EventSubscriberInterface
                         return;
                     }
                     $timeoutSeconds = ($timeoutInterval->h * 3600) + ($timeoutInterval->i * 60) + $timeoutInterval->s;
-                    dump($timeoutSeconds);
                     $this->session->migrate(false, $timeoutSeconds);
                 }
             }

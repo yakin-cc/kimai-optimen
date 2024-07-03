@@ -42,6 +42,7 @@
                     {% endif %}
                 {% endfor %}
             {% endfor %}
+
         {# ------------------------------ Render daily statistics for the selected month -------------------------------------------  #}
         {% elseif selectedMonth is not empty %}
              <h4>
@@ -72,7 +73,8 @@
                                     {% set currentTotalBudget = currentTotalBudget - day.duration %}
                                 {% endif %}
                             {% endif %}
-                            {% set chartLabels = chartLabels|merge([day.day|date('F-d')]) %}
+
+                            {% set chartLabels = chartLabels|merge([day.day|date('F-d', false)]) %}
                             {% set chartValue = {
                                 'label': showMoneyBudget ? currentTotalBudget|money(currency) : currentTotalBudget|duration,
                                 'value': '' ~ (showMoneyBudget ? currentTotalBudget|chart_money : currentTotalBudget|chart_duration),

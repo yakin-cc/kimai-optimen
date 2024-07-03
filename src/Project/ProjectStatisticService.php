@@ -509,8 +509,6 @@ class ProjectStatisticService
             $model->addUser($userStatistic);
         }
 
-        dump($model->getUsers());
-
         // fetch stats grouped by YEAR, MONTH and USER
         $qb1 = clone $qb;
         $qb1
@@ -699,7 +697,9 @@ class ProjectStatisticService
         // ---------------------------------------------------
         if ($inputMonth !== null) {
             $startOfMonth = (clone $inputMonth)->modify('first day of this month')->setTime(0, 0, 0);
+            dump($startOfMonth);
             $endOfMonth = (clone $inputMonth)->modify('last day of this month')->setTime(23, 59, 59);
+            dump($endOfMonth);
         
             $qbDays = $this->timesheetRepository->createQueryBuilder('t');
             $qbDays
@@ -731,18 +731,18 @@ class ProjectStatisticService
             }
         
             // Add empty days for days that have no data
-            $currentDay = (clone $startOfMonth)->modify('midnight');
-            $lastDay = (clone $endOfMonth)->modify('midnight');
-        
+            $currentDay = (clone $startOfMonth);
+            $lastDay = (clone $endOfMonth);
+            
             while ($currentDay <= $lastDay) {
                 $currentDayString = $currentDay->format('Y-m-d');
-        
+                
                 if (!isset($existingDays[$currentDayString])) {
                     // Create a new Day object with empty values
                     $emptyDay = new Day(clone $currentDay, 0, 0);
                     $model->addDay($emptyDay);
                 }
-        
+                
                 // Move to the next day
                 $currentDay->modify('+1 day');
             }
